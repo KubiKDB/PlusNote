@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    tools:context=".activities.CreateListNote">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/createList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="5dp"
+        android:background="@drawable/rectangle_round"
+        android:backgroundTint="#333333"
+        android:elevation="5dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/name_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_top_corners"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/list_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_list_icon"
+                android:backgroundTint="@color/icons"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/inputListName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:hint="..."
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textColor="@color/light_blue_text"
+                android:textColorHint="#70FFFFFF"
+                android:maxLength="24"
+                android:textSize="24dp"
+                app:layout_constraintLeft_toRightOf="@id/list_icon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--        <CheckBox-->
+        <!--            android:id="@+id/c1"-->
+        <!--            android:layout_width="26dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/inputList1"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/inputList1"/>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/headColor"
+            app:layout_constraintTop_toBottomOf="@id/name_icon"
+            app:layout_constraintBottom_toTopOf="@id/btncontainer1">
+            <ScrollView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/list1_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/inputList1"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="1"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <EditText
+                        android:id="@+id/inputList2"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="2"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList3"
+                        app:layout_constraintTop_toBottomOf="@id/inputList1"
+                        />
+
+                    <EditText
+                        android:id="@+id/inputList3"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="3"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList4"
+                        app:layout_constraintTop_toBottomOf="@id/inputList2" />
+
+                    <EditText
+                        android:id="@+id/inputList4"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="4"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@+id/inputList5"
+                        app:layout_constraintTop_toBottomOf="@id/inputList3" />
+
+                    <EditText
+                        android:id="@+id/inputList5"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="5"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList6"
+                        app:layout_constraintTop_toBottomOf="@id/inputList4" />
+
+                    <EditText
+                        android:id="@+id/inputList6"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="6"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList7"
+                        app:layout_constraintTop_toBottomOf="@id/inputList5" />
+
+                    <EditText
+                        android:id="@+id/inputList7"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="7"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList8"
+                        app:layout_constraintTop_toBottomOf="@id/inputList6" />
+
+                    <EditText
+                        android:id="@+id/inputList8"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="8"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList9"
+                        app:layout_constraintTop_toBottomOf="@id/inputList7" />
+
+                    <EditText
+                        android:id="@+id/inputList9"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="9"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList10"
+                        app:layout_constraintTop_toBottomOf="@id/inputList8" />
+
+                    <EditText
+                        android:id="@+id/inputList10"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="10"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList11"
+                        app:layout_constraintTop_toBottomOf="@id/inputList9" />
+
+                    <EditText
+                        android:id="@+id/inputList11"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="11"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintBottom_toTopOf="@id/inputList12"
+                        app:layout_constraintTop_toBottomOf="@id/inputList10" />
+
+                    <EditText
+                        android:id="@+id/inputList12"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="12"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList11" />
+                    <EditText
+                        android:id="@+id/inputList13"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="13"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList12" />
+
+                    <EditText
+                        android:id="@+id/inputList14"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="14"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList13" />
+
+                    <EditText
+                        android:id="@+id/inputList15"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="15"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList14" />
+
+                    <EditText
+                        android:id="@+id/inputList16"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="16"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList15" />
+
+                    <EditText
+                        android:id="@+id/inputList17"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="17"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList16" />
+
+                    <EditText
+                        android:id="@+id/inputList18"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="18"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList17" />
+
+                    <EditText
+                        android:id="@+id/inputList19"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="19"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList18" />
+
+                    <EditText
+                        android:id="@+id/inputList20"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="20"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList19" />
+
+                    <EditText
+                        android:id="@+id/inputList21"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="21"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList20" />
+
+                    <EditText
+                        android:id="@+id/inputList22"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="22"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList21" />
+
+                    <EditText
+                        android:id="@+id/inputList23"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="23"
+                        android:imeOptions="actionNext"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList22" />
+
+                    <EditText
+                        android:id="@+id/inputList24"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/transparent"
+                        android:hint="24"
+                        android:imeOptions="actionDone"
+                        android:maxLength="25"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList23" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btncontainer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/rounded_bottom_corners"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageButton
+                android:id="@+id/cancelButton1"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/ic_plus_icon"
+                android:backgroundTint="#FFA500"
+                android:rotation="45"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/deleteButton1"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ic_delete_icon"
+                android:backgroundTint="#57ACF9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cancelButton1"
+                app:layout_constraintRight_toLeftOf="@id/editButton1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/reminderButton1"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_reminder_icon"
+                android:backgroundTint="#57ACF9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/editButton1"
+                app:layout_constraintRight_toLeftOf="@id/copyButton1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/editButton1"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_pen_icon"
+                android:backgroundTint="#57ACF9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/deleteButton1"
+                app:layout_constraintRight_toLeftOf="@id/reminderButton1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/copyButton1"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_copy_icon"
+                android:backgroundTint="#57ACF9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/reminderButton1"
+                app:layout_constraintRight_toLeftOf="@id/shareButton1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/shareButton1"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_share_icon"
+                android:backgroundTint="#57ACF9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/copyButton1"
+                app:layout_constraintRight_toLeftOf="@id/doneButtonList"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/doneButtonList"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/ic_baseline_done_24"
+                android:backgroundTint="#00FF00"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
