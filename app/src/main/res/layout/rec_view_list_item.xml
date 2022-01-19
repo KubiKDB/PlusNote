@@ -24,9 +24,7 @@
             android:id="@+id/list_icon_container"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:background="@drawable/ic_list_icon"
-            android:backgroundTint="@color/icons"
+            android:background="@drawable/ic_listnote"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
@@ -40,16 +38,8 @@
             android:textColor="@color/white"
             android:textSize="21dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/checkboxList"
+            app:layout_constraintLeft_toRightOf="@id/list_icon_container"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/checkboxList"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_baseline_done_24"
-            android:backgroundTint="#50FFFFFF"
-            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

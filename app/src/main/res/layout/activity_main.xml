@@ -9,7 +9,6 @@
     tools:context=".activities.MainActivity"
     tools:ignore="Autofill,LabelFor,SpUsage,TextFields,HardcodedText,ContentDescription">
 
-
     <View
         android:id="@+id/div"
         android:layout_width="match_parent"
@@ -505,8 +504,7 @@
                 android:id="@+id/text_create"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/text_icon"
-                android:backgroundTint="@color/icons"
+                android:background="@drawable/ic_textnote"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/list_create" />
 
@@ -515,8 +513,7 @@
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="2dp"
-                android:background="@drawable/ic_list_icon"
-                android:backgroundTint="@color/icons"
+                android:background="@drawable/ic_listnote"
                 app:layout_constraintLeft_toRightOf="@id/text_create"
                 app:layout_constraintRight_toLeftOf="@id/voice_create" />
 
@@ -524,6 +521,7 @@
                 android:id="@+id/voice_create"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
                 android:background="@drawable/ic_mic_icon"
                 android:backgroundTint="@color/icons"
                 app:layout_constraintLeft_toRightOf="@id/list_create"
@@ -534,8 +532,7 @@
                 android:layout_width="40dp"
                 android:layout_marginStart="2dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/ic_camera_icon"
-                android:backgroundTint="@color/icons"
+                android:background="@drawable/ic_camera2"
                 app:layout_constraintLeft_toRightOf="@id/voice_create"
                 app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -657,8 +654,7 @@
                 android:id="@+id/text_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/text_icon"
-                android:backgroundTint="@color/icons"
+                android:background="@drawable/ic_textnote"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

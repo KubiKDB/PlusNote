@@ -1,27 +1,20 @@
 package com.example.plusnote.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.plusnote.R;
 import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.TextNote;
-
-import java.util.ArrayList;
 
 public class CreateTextNote extends AppCompatActivity {
     EditText inputTextTitle, inputTextNote;
@@ -88,6 +81,7 @@ public class CreateTextNote extends AppCompatActivity {
     }
 
     private void deleteTextNote() {
+        @SuppressLint("StaticFieldLeak")
         class DeleteTaskNote extends AsyncTask<Void,Void,Void>{
 
             @Override
@@ -128,6 +122,7 @@ public class CreateTextNote extends AppCompatActivity {
             textNote.setId(alreadyAvailableNote.getId());
         }
 
+        @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {

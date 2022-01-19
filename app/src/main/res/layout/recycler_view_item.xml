@@ -22,9 +22,7 @@
             android:id="@+id/text_container_icon"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:background="@drawable/text_icon"
-            android:backgroundTint="@color/icons"
+            android:background="@drawable/ic_textnote"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView

@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     public static final int RESULT_CODE_ADD_NOTE = 1;
     public static final int RESULT_CODE_UPDATE_NOTE = 2;
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
-    public static final int RESULT_CODE_DELETE_NOTE = 4;
     public static LocalDate stLdate = LocalDate.now();
     public static int pageNumberForDay = 0;
     public int year_count = 0;
