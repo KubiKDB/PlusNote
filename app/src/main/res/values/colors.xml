@@ -17,4 +17,7 @@
     <color name="theme121212">#121212</color>
     <color name="white_for_dark_mode">#999999</color>
     <color name="orange">#FFA500</color>
+    <color name="light_blue">#57ACF9</color>
+    <color name="light_blue_dark">#7057ACF9</color>
+    <color name="green70pc_alternative">#009900</color>
 </resources>

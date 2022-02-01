@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    tools:context=".activities.CreateVoiceNote">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/createVoice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="5dp"
+        android:elevation="5dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/text_input_container"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="5dp"
+            android:background="@color/headColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                android:background="@drawable/ic_baseline_play_arrow_24"
+                android:backgroundTint="#8000FF00"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <Chronometer
+                android:id="@+id/playback_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/light_blue_text"
+                android:textSize="15dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toRightOf="@id/play_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/audio_length"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/light_blue_text"
+                android:layout_marginEnd="5dp"
+                android:textSize="15dp"
+                android:visibility="gone"
+                android:text="00:00"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:visibility="visible" />
+
+            <SeekBar
+                android:id="@+id/seekbar_audio"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:elevation="6dp"
+                android:visibility="gone"
+                android:progressBackgroundTint="@color/light_blue_text"
+                android:layout_marginHorizontal="5dp"
+                android:progressTint="@color/light_blue"
+                android:thumbTint="@color/light_blue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/play_button"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:visibility="visible"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/voicename_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/rounded_top_corners"
+            app:layout_constraintBottom_toTopOf="@id/text_input_container">
+
+            <ImageButton
+                android:id="@+id/voice_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_microphone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:soundEffectsEnabled="true"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/inputVoiceTitle"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:background="@color/transparent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:hint="..."
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="24"
+                android:singleLine="true"
+                android:textColor="@color/light_blue_text"
+                android:textColorHint="#70FFFFFF"
+                android:textSize="24dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toRightOf="@id/timer"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/timer"-->
+            <!--                android:layout_width="40dp"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:layout_marginStart="5dp"-->
+            <!--                android:visibility="gone"-->
+            <!--                app:layout_constraintLeft_toRightOf="@id/voice_icon"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <Chronometer
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/light_blue_text"
+                android:textSize="20dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toRightOf="@id/voice_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btncontainer2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_bottom_corners"
+            app:layout_constraintTop_toBottomOf="@id/text_input_container">
+
+            <ImageButton
+                android:id="@+id/cancelButtonVoice"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/ic_plus_icon"
+                android:backgroundTint="#FFA500"
+                android:rotation="45"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/deleteButtonVoice"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ic_delete_icon"
+                android:backgroundTint="@color/light_blue_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cancelButtonVoice"
+                app:layout_constraintRight_toLeftOf="@id/editButtonVoice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/editButtonVoice"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_pen_icon"
+                android:backgroundTint="@color/light_blue_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/deleteButtonVoice"
+                app:layout_constraintRight_toLeftOf="@id/reminderButtonVoice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/reminderButtonVoice"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_reminder_icon"
+                android:backgroundTint="#57ACF9"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/editButtonVoice"
+                app:layout_constraintRight_toLeftOf="@id/copyButtonVoice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/copyButtonVoice"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_copy_icon"
+                android:backgroundTint="@color/light_blue_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/reminderButtonVoice"
+                app:layout_constraintRight_toLeftOf="@id/shareButtonVoice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/shareButtonVoice"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_share_icon"
+                android:backgroundTint="@color/light_blue_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/copyButtonVoice"
+                app:layout_constraintRight_toLeftOf="@id/doneButtonVoice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/doneButtonVoice"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_baseline_done_24"
+                android:backgroundTint="#00FF00"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

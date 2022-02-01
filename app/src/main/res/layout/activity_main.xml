@@ -27,15 +27,15 @@
         android:id="@+id/notesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/vp2"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vp2" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/listNotesRecyclerView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/vp2"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/notesRecyclerView"/>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listNotesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/notesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@id/vp2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/weekDaysCount"
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:text="MON"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/weekDay1" />
 
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:text="TUE"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toRightOf="@id/weekDay"
             app:layout_constraintRight_toLeftOf="@+id/weekDay2" />
 
@@ -74,7 +74,7 @@
             android:gravity="center"
             android:text="WED"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toRightOf="@id/weekDay1"
             app:layout_constraintRight_toLeftOf="@+id/weekDay3" />
 
@@ -85,7 +85,7 @@
             android:gravity="center"
             android:text="THU"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toRightOf="@id/weekDay2"
             app:layout_constraintRight_toLeftOf="@+id/weekDay4" />
 
@@ -96,7 +96,7 @@
             android:gravity="center"
             android:text="FRI"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toRightOf="@id/weekDay3"
             app:layout_constraintRight_toLeftOf="@+id/weekDay5" />
 
@@ -107,7 +107,7 @@
             android:gravity="center"
             android:text="SAT"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toRightOf="@id/weekDay4"
             app:layout_constraintRight_toLeftOf="@+id/weekDay6" />
 
@@ -119,79 +119,83 @@
             android:gravity="center"
             android:text="SUN"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintLeft_toRightOf="@id/weekDay5"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/year_choose_layout"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:background="@color/headColor"
-            android:elevation="7dp"
-            android:visibility="gone"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/year_choose_layout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/headColor"
+        android:elevation="7dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/div">
+
+        <TextView
+            android:id="@+id/year_choose"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textAllCaps="true"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/div"
-            tools:visibility="visible">
-            <TextView
-                android:id="@+id/year_choose"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:maxLength="4"
-                android:layout_marginStart="5dp"
-                android:textAllCaps="true"
-                android:textColor="@color/HeadTextColor"
-                android:textSize="19sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/year_choose1"/>
-            <TextView
-                android:id="@+id/year_choose1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textAllCaps="true"
-                android:textColor="@color/HeadTextColor"
-                android:textSize="19sp"
-                app:layout_constraintLeft_toRightOf="@id/year_choose"
-                app:layout_constraintRight_toLeftOf="@id/year_choose2"/>
-            <TextView
-                android:id="@+id/year_choose2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textAllCaps="true"
-                android:textColor="@color/HeadTextColor"
-                android:textSize="19sp"
-                app:layout_constraintLeft_toRightOf="@id/year_choose1"
-                app:layout_constraintRight_toLeftOf="@id/year_choose3"/>
-            <TextView
-                android:id="@+id/year_choose3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textAllCaps="true"
-                android:textColor="@color/HeadTextColor"
-                android:textSize="19sp"
-                app:layout_constraintLeft_toRightOf="@id/year_choose2"
-                app:layout_constraintRight_toLeftOf="@id/year_choose4"/>
-            <TextView
-                android:id="@+id/year_choose4"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:maxLength="4"
-                android:textAllCaps="true"
-                android:textColor="@color/HeadTextColor"
-                android:textSize="19sp"
-                app:layout_constraintLeft_toRightOf="@id/year_choose3"
-                app:layout_constraintRight_toRightOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintRight_toLeftOf="@id/year_choose1" />
+
+        <TextView
+            android:id="@+id/year_choose1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textAllCaps="true"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/year_choose"
+            app:layout_constraintRight_toLeftOf="@id/year_choose2" />
+
+        <TextView
+            android:id="@+id/year_choose2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textAllCaps="true"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/year_choose1"
+            app:layout_constraintRight_toLeftOf="@id/year_choose3" />
+
+        <TextView
+            android:id="@+id/year_choose3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textAllCaps="true"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/year_choose2"
+            app:layout_constraintRight_toLeftOf="@id/year_choose4" />
+
+        <TextView
+            android:id="@+id/year_choose4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textAllCaps="true"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/year_choose3"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/month_choose"
@@ -206,16 +210,16 @@
             android:id="@+id/jan"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="5dp"
             android:gravity="center"
             android:maxLength="3"
-            android:layout_marginStart="5dp"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/jul"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/feb"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/jul"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/feb"
@@ -225,11 +229,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/jul"
             app:layout_constraintLeft_toRightOf="@id/jan"
             app:layout_constraintRight_toLeftOf="@id/mar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/jul"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/mar"
@@ -239,11 +243,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/jul"
             app:layout_constraintLeft_toRightOf="@id/feb"
             app:layout_constraintRight_toLeftOf="@id/apr"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/jul"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/apr"
@@ -253,11 +257,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/jul"
             app:layout_constraintLeft_toRightOf="@id/mar"
             app:layout_constraintRight_toLeftOf="@id/may"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/jul"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/may"
@@ -267,11 +271,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/jul"
             app:layout_constraintLeft_toRightOf="@id/apr"
             app:layout_constraintRight_toLeftOf="@id/jun"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/jul"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/jun"
@@ -281,41 +285,41 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@id/jul"
             app:layout_constraintLeft_toRightOf="@id/may"
             app:layout_constraintRight_toLeftOf="@id/year1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/jul"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/year1"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="5dp"
             android:gravity="center"
             android:maxLength="4"
-            android:layout_marginEnd="5dp"
             android:textAllCaps="true"
             android:textColor="@color/orange"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/jun"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/jul"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="5dp"
             android:gravity="center"
             android:maxLength="3"
-            android:layout_marginStart="5dp"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/aug"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
 
         <TextView
             android:id="@+id/aug"
@@ -325,11 +329,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/jul"
             app:layout_constraintRight_toLeftOf="@id/sep"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
 
         <TextView
             android:id="@+id/sep"
@@ -339,11 +343,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/aug"
             app:layout_constraintRight_toLeftOf="@id/oct"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
 
         <TextView
             android:id="@+id/oct"
@@ -353,11 +357,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/sep"
             app:layout_constraintRight_toLeftOf="@id/nov"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
 
         <TextView
             android:id="@+id/nov"
@@ -367,11 +371,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/oct"
             app:layout_constraintRight_toLeftOf="@id/dec"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
 
         <TextView
             android:id="@+id/dec"
@@ -381,11 +385,11 @@
             android:maxLength="3"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/nov"
             app:layout_constraintRight_toLeftOf="@id/year1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
 
         <TextView
             android:id="@+id/year2"
@@ -395,11 +399,11 @@
             android:maxLength="4"
             android:textAllCaps="true"
             android:textColor="@color/HeadTextColor"
-            android:textSize="19sp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/dec"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/jan"/>
+            app:layout_constraintTop_toBottomOf="@id/jan" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -421,12 +425,12 @@
             android:id="@+id/month_view"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
+            android:layout_marginEnd="3dp"
             android:gravity="center"
-            android:textAllCaps="true"
             android:maxLength="3"
+            android:textAllCaps="true"
             android:textColor="#FFA500"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintRight_toLeftOf="@id/year_view" />
 
         <TextView
@@ -434,22 +438,25 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="5dp"
-            android:maxLength="4"
             android:gravity="center"
+            android:maxLength="4"
             android:text="2022"
             android:textColor="#FFA500"
-            android:textSize="19sp"
+            android:textSize="20dp"
             app:layout_constraintRight_toRightOf="parent" />
 
         <EditText
             android:id="@+id/searchEditText"
-            android:layout_width="310dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/transparent"
             android:singleLine="true"
             android:textColor="@color/light_blue_text"
             android:textSize="21dp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/search_do"
             app:layout_constraintStart_toEndOf="@id/plus" />
 
         <TextView
@@ -479,21 +486,18 @@
             app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
             app:layout_constraintTop_toTopOf="@id/constraintLayout" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/search"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:background="@drawable/ic_search_icon"-->
-<!--            android:backgroundTint="#999999"-->
-<!--            android:contentDescription="@string/app_name"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/constraintLayout"-->
-<!--            app:layout_constraintRight_toRightOf="@id/constraintLayout"-->
-<!--            app:layout_constraintTop_toTopOf="@id/constraintLayout" />-->
+        <ImageButton
+            android:id="@+id/search_do"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/ic_search"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/createNote"
-            android:layout_width="166dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:visibility="gone"
@@ -506,7 +510,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/ic_textnote"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/list_create" />
+                app:layout_constraintRight_toLeftOf="@id/list_create"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageButton
                 android:id="@+id/list_create"
@@ -522,59 +527,29 @@
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="2dp"
-                android:background="@drawable/ic_mic_icon"
-                android:backgroundTint="@color/icons"
+                android:background="@drawable/ic_microphone"
                 app:layout_constraintLeft_toRightOf="@id/list_create"
                 app:layout_constraintRight_toLeftOf="@id/camera_create" />
 
             <ImageButton
                 android:id="@+id/camera_create"
                 android:layout_width="40dp"
-                android:layout_marginStart="2dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
                 android:background="@drawable/ic_camera2"
                 app:layout_constraintLeft_toRightOf="@id/voice_create"
+                app:layout_constraintRight_toLeftOf="@id/search" />
+
+            <ImageButton
+                android:id="@+id/search"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:background="@drawable/ic_search"
+                app:layout_constraintLeft_toRightOf="@id/camera_create"
                 app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/textOutContainer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginHorizontal="5dp"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:background="@drawable/rectangle_round"-->
-<!--        android:elevation="2dp"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/div3"-->
-<!--        tools:visibility="visible">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/textOut"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginHorizontal="10dp"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:paddingBottom="2dp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="21dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toLeftOf="@id/checkbox"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/checkbox"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@drawable/ic_baseline_done_24"-->
-<!--            android:backgroundTint="#50FFFFFF"-->
-<!--            app:layout_constraintRight_toRightOf="parent" />-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/blur"
@@ -591,267 +566,6 @@
         android:background="#90000000"
         android:elevation="6dp"
         android:visibility="gone" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/VoiceOutContainer"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="7dp"
-        android:background="@drawable/rectangle_round"
-        android:elevation="2dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp2"
-        tools:visibility="visible">
-
-        <TextView
-            android:id="@+id/VoiceDescription"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:paddingBottom="2dp"
-            android:textColor="@color/white"
-            android:textSize="21dp"
-            app:layout_constraintRight_toRightOf="parent"
-
-            />
-        <!--        <ImageButton-->
-        <!--            android:id="@+id/playBtn"-->
-        <!--            android:layout_width="50dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--            android:background="@drawable/ic_baseline_play_arrow_24"-->
-        <!--            android:backgroundTint="#9000FF00"-->
-        <!--            />-->
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/createText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="5dp"
-        android:background="@drawable/rectangle_round"
-        android:backgroundTint="#333333"
-        android:elevation="5dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/txtname_icon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/rounded_top_corners"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/text_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_textnote"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/inputText"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="7dp"
-                android:layout_marginEnd="7dp"
-                android:background="@color/transparent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:hint="..."
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:maxLength="24"
-                android:singleLine="true"
-                android:textColor="@color/light_blue_text"
-                android:textColorHint="#70FFFFFF"
-                android:textSize="24dp"
-                app:layout_constraintLeft_toRightOf="@id/text_icon"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginVertical="5dp"
-            android:background="@color/headColor"
-            app:layout_constraintBottom_toTopOf="@id/btncontainer"
-            app:layout_constraintTop_toBottomOf="@id/txtname_icon">
-
-            <EditText
-                android:id="@+id/inputTextNote"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="5dp"
-                android:background="@android:color/transparent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="top"
-                android:hint="..."
-                android:textColor="@color/light_blue_text"
-                android:textColorHint="#70FFFFFF"
-                android:textSize="21dp"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btncontainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/rounded_bottom_corners"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageButton
-                android:id="@+id/cancelButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/ic_plus_icon"
-                android:backgroundTint="#FFA500"
-                android:rotation="45"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/deleteButton"
-                android:layout_width="30dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/ic_delete_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cancelButton"
-                app:layout_constraintRight_toLeftOf="@id/editButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/reminderButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_reminder_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/editButton"
-                app:layout_constraintRight_toLeftOf="@id/copyButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/editButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_pen_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/deleteButton"
-                app:layout_constraintRight_toLeftOf="@id/reminderButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/copyButton"
-                android:layout_width="30dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_copy_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/reminderButton"
-                app:layout_constraintRight_toLeftOf="@id/shareButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/shareButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_share_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/copyButton"
-                app:layout_constraintRight_toLeftOf="@id/doneButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/doneButton"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/ic_baseline_done_24"
-                android:backgroundTint="#00FF00"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/createVoice"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="@drawable/rectangle_round"
-        android:elevation="5dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/inputVoiceText"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginHorizontal="5dp"
-            android:background="@android:color/transparent"
-            android:gravity="top"
-            android:textColor="@color/white"
-            android:textSize="21dp"
-            app:layout_constraintTop_toBottomOf="@id/VoiceRecord_container" />
-
-        <ImageButton
-            android:id="@+id/doneButton1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_baseline_done_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/VoiceRecord_container"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginHorizontal="5dp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/VoiceRecordButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_mic_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vp2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--    <androidx.constraintlayout.widget.ConstraintLayout-->

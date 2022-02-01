@@ -53,14 +53,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--        <CheckBox-->
-        <!--            android:id="@+id/c1"-->
-        <!--            android:layout_width="26dp"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/inputList1"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/inputList1"/>-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -80,31 +72,39 @@
                     <EditText
                         android:id="@+id/inputList1"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="1"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toTopOf="parent"
                         />
+                    <CheckBox
+                        android:id="@+id/checkbox1"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList1"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList1"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
                     <EditText
                         android:id="@+id/inputList2"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="2"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -112,18 +112,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList3"
                         app:layout_constraintTop_toBottomOf="@id/inputList1"
                         />
+                    <CheckBox
+                        android:id="@+id/checkbox2"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList2"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList2"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
 
                     <EditText
                         android:id="@+id/inputList3"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="3"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -131,17 +139,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList4"
                         app:layout_constraintTop_toBottomOf="@id/inputList2" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox3"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList3"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList3"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList4"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="4"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -149,17 +166,26 @@
                         app:layout_constraintBottom_toTopOf="@+id/inputList5"
                         app:layout_constraintTop_toBottomOf="@id/inputList3" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox4"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList4"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList4"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList5"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="5"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -167,17 +193,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList6"
                         app:layout_constraintTop_toBottomOf="@id/inputList4" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox5"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList5"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList5"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList6"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="6"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -185,17 +220,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList7"
                         app:layout_constraintTop_toBottomOf="@id/inputList5" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox6"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList6"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList6"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList7"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="7"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -203,17 +247,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList8"
                         app:layout_constraintTop_toBottomOf="@id/inputList6" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox7"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList7"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList7"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList8"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="8"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -221,17 +274,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList9"
                         app:layout_constraintTop_toBottomOf="@id/inputList7" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox8"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList8"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList8"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList9"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="9"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -239,17 +301,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList10"
                         app:layout_constraintTop_toBottomOf="@id/inputList8" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox9"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList9"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList9"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList10"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="10"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -257,17 +328,26 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList11"
                         app:layout_constraintTop_toBottomOf="@id/inputList9" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox10"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList10"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList10"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList11"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="11"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
@@ -275,246 +355,394 @@
                         app:layout_constraintBottom_toTopOf="@id/inputList12"
                         app:layout_constraintTop_toBottomOf="@id/inputList10" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox11"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList11"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList11"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList12"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="12"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList11" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox12"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList12"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList12"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList13"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="13"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList12" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox13"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList13"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList13"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList14"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="14"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList13" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox14"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList14"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList14"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList15"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="15"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList14" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox15"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList15"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList15"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList16"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="16"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList15" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox16"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList16"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList16"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList17"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="17"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList16" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox17"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList17"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList17"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList18"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="18"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList17" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox18"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList18"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList18"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList19"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="19"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList18" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox19"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList19"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList19"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList20"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="20"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList19" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox20"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList20"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList20"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList21"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="21"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList20" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox21"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList21"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList21"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList22"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="22"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList21" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox22"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList22"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList22"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList23"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="23"
                         android:imeOptions="actionNext"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList22" />
 
+                    <CheckBox
+                        android:id="@+id/checkbox23"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList23"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList23"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
                     <EditText
                         android:id="@+id/inputList24"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="5dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:hint="24"
                         android:imeOptions="actionDone"
-                        android:maxLength="25"
+                        android:maxLength="26"
                         android:singleLine="true"
                         android:textColor="@color/light_blue_text"
                         android:textColorHint="#70FFFFFF"
                         android:textSize="21dp"
                         app:layout_constraintTop_toBottomOf="@id/inputList23" />
+
+                    <CheckBox
+                        android:id="@+id/checkbox24"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList24"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList24"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
+
+                    <EditText
+                        android:id="@+id/inputList25"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="30dp"
+                        android:background="@android:color/transparent"
+                        android:hint="25"
+                        android:imeOptions="actionNext"
+                        android:maxLength="26"
+                        android:singleLine="true"
+                        android:textColor="@color/light_blue_text"
+                        android:textColorHint="#70FFFFFF"
+                        android:textSize="21dp"
+                        app:layout_constraintTop_toBottomOf="@id/inputList24" />
+                    <CheckBox
+                        android:id="@+id/checkbox25"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintTop_toTopOf="@id/inputList25"
+                        app:layout_constraintBottom_toBottomOf="@id/inputList25"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginEnd="3dp"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
-
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btncontainer1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/rounded_bottom_corners"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
-                android:id="@+id/cancelButton1"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:id="@+id/cancelButtonList"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="5dp"
                 android:background="@drawable/ic_plus_icon"
                 android:backgroundTint="#FFA500"
@@ -524,68 +752,68 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/deleteButton1"
-                android:layout_width="30dp"
-                android:layout_height="35dp"
+                android:id="@+id/deleteButtonList"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/ic_delete_icon"
-                android:backgroundTint="#57ACF9"
+                android:backgroundTint="@color/light_blue_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cancelButton1"
-                app:layout_constraintRight_toLeftOf="@id/editButton1"
+                app:layout_constraintLeft_toRightOf="@id/cancelButtonList"
+                app:layout_constraintRight_toLeftOf="@id/editButtonList"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/reminderButton1"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_reminder_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/editButton1"
-                app:layout_constraintRight_toLeftOf="@id/copyButton1"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/editButton1"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_pen_icon"
-                android:backgroundTint="#57ACF9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/deleteButton1"
-                app:layout_constraintRight_toLeftOf="@id/reminderButton1"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/copyButton1"
+                android:id="@+id/editButtonList"
                 android:layout_width="30dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_copy_icon"
-                android:backgroundTint="#57ACF9"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_pen_icon"
+                android:backgroundTint="@color/light_blue_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/reminderButton1"
-                app:layout_constraintRight_toLeftOf="@id/shareButton1"
+                app:layout_constraintLeft_toRightOf="@id/deleteButtonList"
+                app:layout_constraintRight_toLeftOf="@id/reminderButtonList"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/shareButton1"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:id="@+id/reminderButtonList"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_reminder_icon"
+                android:backgroundTint="@color/light_blue_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/editButtonList"
+                app:layout_constraintRight_toLeftOf="@id/copyButtonList"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/copyButtonList"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_copy_icon"
+                android:backgroundTint="@color/light_blue_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/reminderButtonList"
+                app:layout_constraintRight_toLeftOf="@id/shareButtonList"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/shareButtonList"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_share_icon"
-                android:backgroundTint="#57ACF9"
+                android:backgroundTint="@color/light_blue_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/copyButton1"
+                app:layout_constraintLeft_toRightOf="@id/copyButtonList"
                 app:layout_constraintRight_toLeftOf="@id/doneButtonList"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/doneButtonList"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/ic_baseline_done_24"
-                android:backgroundTint="#00FF00"
+                android:backgroundTint="#4000FF00"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

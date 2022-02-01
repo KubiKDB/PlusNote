@@ -3,25 +3,55 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_baseline_play_arrow_24.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_camera2_dark.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_delete_icon.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_mic_icon.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_microphone_dark.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_microphone_recording.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_search_icon.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_video_dark.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/ic_video_recording.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/rectangle_round.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/rounded_bottom_corners.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/rounded_top_corners.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/stroke.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/text_icon.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/circle.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_baseline_arrow_forward_24.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_camera2.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_camera_icon.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_image.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_image_dark.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_listnote.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_listnote_dark.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_microphone.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_search.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_search_icon.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_textnote.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_textnote_dark.xml" value="0.28229166666666666" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_video.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/rectangle_round_stroke.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/activity_camera.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/activity_create_image_note.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/activity_create_image_note2.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/activity_create_list_note.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/activity_create_text_note.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/activity_create_voice_note.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/empty_file.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/fragment_page.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/fragment_page_2.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/motion_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/photo_capture_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/rec_view_list_item.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/recycler_view_item.xml" value="0.264" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/recycler_view_item_voice.xml" value="0.26614583333333336" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/swipe_activity_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/swipe_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/video_record_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/layout/view_pager_for_notes.xml" value="0.25416666666666665" />
+        <entry key="..\:/PlusNote/app/src/main/res/xml/file_paths.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
