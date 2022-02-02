@@ -20,6 +20,9 @@ public class Note implements Serializable {
     @ColumnInfo(name = "textNoteText")
     private String textNoteText;
 
+    @ColumnInfo(name = "date")
+    private String date;
+
     @ColumnInfo(name = "list_item1")
     private String list_item1;
     @ColumnInfo(name = "list_item2")
@@ -133,6 +136,8 @@ public class Note implements Serializable {
     private boolean is_voice;
     @ColumnInfo(name = "from_gallery")
     private boolean from_gallery;
+    @ColumnInfo(name = "is_photo")
+    private boolean is_photo;
 
 
     @ColumnInfo(name = "image_path")
@@ -142,6 +147,23 @@ public class Note implements Serializable {
 
     @ColumnInfo(name = "audio_length")
     private String audio_length;
+
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public boolean isIs_photo() {
+        return is_photo;
+    }
+
+    public void setIs_photo(boolean is_photo) {
+        this.is_photo = is_photo;
+    }
 
     public String getAudio_length() {
         return audio_length;

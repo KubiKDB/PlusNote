@@ -19,8 +19,7 @@
             android:gravity="center"
             android:maxLength="2"
             android:textColor="@color/HeadTextColor"
-            android:textSize="22dp"
-            />
+            android:textSize="22dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

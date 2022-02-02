@@ -100,7 +100,7 @@
         android:elevation="1dp"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <ImageButton
             android:id="@+id/open_view"

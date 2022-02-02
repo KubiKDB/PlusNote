@@ -317,6 +317,8 @@ public class CreateImageNote extends AppCompatActivity {
         shareButtonImage.setEnabled(true);
         doneButtonImage.setEnabled(false);
 
+        Log.e("DateSavedImage", alreadyAvailableNote.getDate());
+
         deleteButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         editButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         copyButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
@@ -346,9 +348,9 @@ public class CreateImageNote extends AppCompatActivity {
                 }
                 imageView.setImageBitmap(temp);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             if (!getIntent().getBooleanExtra("deleteNote", false)) {
-                Toast.makeText(this, "Image/Video has been deleted from gallery", Toast.LENGTH_LONG)
+                Toast.makeText(this, "Image has been deleted from gallery", Toast.LENGTH_LONG)
                         /*.setGravity(Gravity.CENTER, 0, 0)*/.show();
             }
         }
@@ -364,15 +366,18 @@ public class CreateImageNote extends AppCompatActivity {
             note.setImage_path(selectedImagePath);
             note.setAudio_length(VideoActivity.timer_string);
             note.setFrom_gallery(VideoActivity.fromGallery);
-            if (isVideo) {
-                note.setIs_video(true);
+            note.setIs_video(isVideo);
+            if (isVideo){
                 note.setImage_path(outputFile.getAbsolutePath());
             }
+            note.setDate(MainActivity.notesDay);
         } else {
             note.setIs_video(alreadyAvailableNote.isIs_video());
+            note.setIs_photo(alreadyAvailableNote.isIs_photo());
             note.setImage_path(alreadyAvailableNote.getImage_path());
             note.setAudio_length(alreadyAvailableNote.getAudio_length());
             note.setFrom_gallery(alreadyAvailableNote.isFrom_gallery());
+            note.setDate(alreadyAvailableNote.getDate());
         }
         note.setIs_image(true);
         if (alreadyAvailableNote != null) {

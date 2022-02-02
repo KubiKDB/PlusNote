@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -149,6 +150,8 @@ public class CreateTextNote extends AppCompatActivity {
         shareButton.setEnabled(true);
         doneButton.setEnabled(false);
 
+        Log.e("DateSavedText", alreadyAvailableNote.getDate());
+
         deleteButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         editButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         copyButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
@@ -170,7 +173,10 @@ public class CreateTextNote extends AppCompatActivity {
         note.setIs_image(false);
 
         if (alreadyAvailableNote != null) {
+            note.setDate(alreadyAvailableNote.getDate());
             note.setId(alreadyAvailableNote.getId());
+        } else {
+            note.setDate(MainActivity.notesDay);
         }
 
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {

@@ -53,6 +53,7 @@ public class PhotoActivity extends AppCompatActivity {
     private CameraPreview mPreview;
     public static boolean change = false;
     ConstraintLayout camera_preview, preview;
+    public static boolean isPhoto = false;
 
 
     @Override
@@ -102,7 +103,10 @@ public class PhotoActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), CreateImageNote.class);
             startActivityForResult(intent, 1001);
         };
-        take_photo.setOnClickListener(v -> mCamera.takePicture(null, null, mPicture));
+        take_photo.setOnClickListener(v -> {
+            mCamera.takePicture(null, null, mPicture);
+            isPhoto = true;
+        });
         mPreview = new CameraPreview(this, mCamera);
         preview.addView(mPreview);
 

@@ -21,10 +21,10 @@ import java.util.Locale;
 public class PagerFragment2 extends Fragment {
     public LocalDate ld = LocalDate.of(2022, Month.JANUARY, 1);
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM yyyy EEEE", Locale.ENGLISH);
+    final DateTimeFormatter noteDayF = DateTimeFormatter.ofPattern("yyyy_MM_dd");
     public String days = dtf.format(ld);
 
     private static int pageNumber;
-//    public static boolean isClicked = false;
 
     public static PagerFragment2 newInstance(int page) {
         PagerFragment2 fragment2 = new PagerFragment2();
@@ -50,43 +50,35 @@ public class PagerFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.fragment_page_2, container, false);
 //        View mainView = inflater.inflate(R.layout.activity_main, container, false);
-
-        TextView dayView = result.findViewById(R.id.Day);
-        TextView dayView1 = result.findViewById(R.id.Day1);
-        TextView dayView2 = result.findViewById(R.id.Day2);
-        TextView dayView3 = result.findViewById(R.id.Day3);
-        TextView dayView4 = result.findViewById(R.id.Day4);
-        TextView dayView5 = result.findViewById(R.id.Day5);
-        TextView dayView6 = result.findViewById(R.id.Day6);
-//        TextView mon = mainView.findViewById(R.id.weekDay);
-//        TextView tue = mainView.findViewById(R.id.weekDay1);
-//        TextView wed = mainView.findViewById(R.id.weekDay2);
-//        TextView thu = mainView.findViewById(R.id.weekDay3);
-//        TextView fri = mainView.findViewById(R.id.weekDay4);
-//        TextView sat = mainView.findViewById(R.id.weekDay5);
-//        TextView sun = mainView.findViewById(R.id.weekDay6);
 //        TextView[] week_ds = new TextView[7];
-//        week_ds[0] = mon;
-//        week_ds[1] = tue;
-//        week_ds[2] = wed;
-//        week_ds[3] = thu;
-//        week_ds[4] = fri;
-//        week_ds[5] = sat;
-//        week_ds[6] = sun;
+//        week_ds[0] = mainView.findViewById(R.id.weekDay);
+//        week_ds[1] = mainView.findViewById(R.id.weekDay1);
+//        week_ds[2] = mainView.findViewById(R.id.weekDay2);
+//        week_ds[3] = mainView.findViewById(R.id.weekDay3);
+//        week_ds[4] = mainView.findViewById(R.id.weekDay4);
+//        week_ds[5] = mainView.findViewById(R.id.weekDay5);
+//        week_ds[6] = mainView.findViewById(R.id.weekDay6);
+        String[] dates = new String[7];
         TextView[] dvs = new TextView[7];
-        dvs[0] = dayView;
-        dvs[1] = dayView1;
-        dvs[2] = dayView2;
-        dvs[3] = dayView3;
-        dvs[4] = dayView4;
-        dvs[5] = dayView5;
-        dvs[6] = dayView6;
+        dvs[0] = result.findViewById(R.id.Day);
+        dvs[1] = result.findViewById(R.id.Day1);
+        dvs[2] = result.findViewById(R.id.Day2);
+        dvs[3] = result.findViewById(R.id.Day3);
+        dvs[4] = result.findViewById(R.id.Day4);
+        dvs[5] = result.findViewById(R.id.Day5);
+        dvs[6] = result.findViewById(R.id.Day6);
+        if (MainActivity.pnc != pageNumber) {
+            for (int i = 0; i < dvs.length; i++) {
+                dvs[i].setTextColor(Color.parseColor("#9000FF00"));
+            }
+        }
         int i = 1;
         if (pageNumber % 2 == 1) {
             i = 2 + (pageNumber - 1) * 7;
             ld = ld.plusDays(i);
             days = dtf.format(ld);
             for (int s = 0; s < 7; s++) {
+                dates[weekDayToNum(ld.getDayOfWeek())] = noteDayF.format(ld);
                 dvs[weekDayToNum(ld.getDayOfWeek())].setText(days);
                 int finalS = s;
                 dvs[s].setOnClickListener(view -> {
@@ -94,9 +86,11 @@ public class PagerFragment2 extends Fragment {
                         dvs[z].setTextColor(Color.parseColor("#9000FF00"));
 //                        week_ds[z].setTextColor(Color.parseColor("#9000FF00"));
                     }
+                    MainActivity.pnc = pageNumber;
                     MainActivity.pageNumberForDay = -1;
                     dvs[finalS].setTextColor(Color.parseColor("#FFA500"));
 //                    week_ds[finalS].setTextColor(Color.parseColor("#FFA500"));
+                    MainActivity.ClickOnDay(dvs[finalS], dates[finalS], getContext());
                 });
                 ld = ld.plusDays(1);
                 days = dtf.format(ld);
@@ -107,6 +101,7 @@ public class PagerFragment2 extends Fragment {
             ld = ld.plusDays(i);
             days = dtf.format(ld);
             for (int s = 0; s < 7; s++) {
+                dates[weekDayToNum(ld.getDayOfWeek())] = noteDayF.format(ld);
                 dvs[weekDayToNum(ld.getDayOfWeek())].setText(days);
                 int finalS = s;
                 dvs[s].setOnClickListener(view -> {
@@ -114,9 +109,11 @@ public class PagerFragment2 extends Fragment {
                         dvs[z].setTextColor(Color.parseColor("#9000FF00"));
 //                        week_ds[z].setTextColor(Color.parseColor("#9000FF00"));
                     }
+                    MainActivity.pnc = pageNumber;
                     MainActivity.pageNumberForDay = -1;
                     dvs[finalS].setTextColor(Color.parseColor("#FFA500"));
 //                    week_ds[finalS].setTextColor(Color.parseColor("#FFA500"));
+                    MainActivity.ClickOnDay(dvs[finalS], dates[finalS], getContext());
                 });
                 ld = ld.plusDays(1);
                 days = dtf.format(ld);

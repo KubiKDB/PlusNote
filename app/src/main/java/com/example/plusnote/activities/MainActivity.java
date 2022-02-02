@@ -1,29 +1,15 @@
 package com.example.plusnote.activities;
 
-import static java.time.DayOfWeek.MONDAY;
-
 import android.Manifest;
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,10 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -48,8 +32,6 @@ import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.Note;
 import com.example.plusnote.listeners.NotesListener;
 
-import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -57,25 +39,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("deprecation")
 @SuppressLint("SetTextI18n")
 public class MainActivity extends AppCompatActivity implements NotesListener {
-    private RecyclerView notesRecyclerView;
-    private List<Note> noteList;
-    private NotesAdapter notesAdapter;
+    private static RecyclerView notesRecyclerView;
+    private static List<Note> noteList;
+    private static NotesAdapter notesAdapter;
+    public static int pnc;
 
-    private int noteClickedPosition = -1;
-    private static int REQUEST_CODE_ADD_NOTE = 1;
-    private static int REQUEST_CODE_UPDATE_NOTE = 2;
-    private static int REQUEST_CODE_SHOW_NOTES = 3;
+    private static int noteClickedPosition = -1;
+    private static final int REQUEST_CODE_ADD_NOTE = 1;
+    private static final int REQUEST_CODE_UPDATE_NOTE = 2;
+    private static final int REQUEST_CODE_SHOW_NOTES = 3;
     public static LocalDate stLdate = LocalDate.now();
     public static int pageNumberForDay = 0;
     public int year_count = 2022;
     public int savedYearNum = 0;
-//    private static final String LOG_TAG = "AudioRecordTest";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-//    private static String fileName = null;
-//    private MediaRecorder recorder = null;
-//    private MediaPlayer player = null;
     private boolean permissionToRecordAccepted = false;
     private final String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
@@ -83,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.CAMERA"};
     //    public static DayOfWeek dayOfWeek;
+    public static String notesDay;
 
 
     @Override
@@ -94,115 +75,12 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         if (!permissionToRecordAccepted) finish();
     }
 
-//    private void onRecord(boolean start) {
-//        if (start) {
-//            startRecording();
-//        } else {
-//            stopRecording();
-//        }
-//    }
-//
-//    private void onPlay(boolean start) {
-//        if (start) {
-//            startPlaying();
-//        } else {
-//            stopPlaying();
-//        }
-//    }
-//
-//    private void startPlaying() {
-//        player = new MediaPlayer();
-//        player.setVolume(100, 100);
-//        try {
-//            player.setDataSource(fileName);
-//            player.prepare();
-//            player.start();
-//        } catch (IOException e) {
-//            Log.e(LOG_TAG, "prepare() failed");
-//        }
-//    }
-//
-//    private void stopPlaying() {
-//        player.release();
-//        player = null;
-//    }
-//
-//    private void startRecording() {
-//        recorder = new MediaRecorder();
-//        recorder.setAudioSource(MediaRecorder.AudioSource.UNPROCESSED);
-//        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//        recorder.setOutputFile(fileName);
-//        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//        try {
-//            recorder.prepare();
-//        } catch (IOException e) {
-//            Log.e(LOG_TAG, "prepare() failed");
-//        }
-//        recorder.start();
-//    }
-//
-//    private void stopRecording() {
-//        recorder.stop();
-//        recorder.reset();
-//        recorder.release();
-//        recorder = null;
-//    }
-//
-//    class RecordButton extends androidx.appcompat.widget.AppCompatButton {
-//        boolean mStartRecording = true;
-//        OnClickListener clicker = v -> {
-//            onRecord(mStartRecording);
-//            if (mStartRecording) {
-//                setText("Stop recording");
-//            } else {
-//                setText("Start recording");
-//            }
-//            mStartRecording = !mStartRecording;
-//        };
-//
-//        public RecordButton(Context ctx) {
-//            super(ctx);
-//            setText("Start recording");
-//            setOnClickListener(clicker);
-//        }
-//    }
-//
-//    class PlayButton extends androidx.appcompat.widget.AppCompatButton {
-//        boolean mStartPlaying = true;
-//        OnClickListener clicker = v -> {
-//            onPlay(mStartPlaying);
-//            if (mStartPlaying) {
-//                setText("Stop playing");
-//            } else {
-//                setText("Start playing");
-//            }
-//            mStartPlaying = !mStartPlaying;
-//        };
-//
-//        public PlayButton(Context ctx) {
-//            super(ctx);
-//            setText("Start playing");
-//            setOnClickListener(clicker);
-//        }
-//    }
-//
-//    private final int REQUEST_CODE_PERMISSIONS = 1001;
-////    private final String[] REQUIRED_PERMISSIONS = new String[]{
-////            "android.permission.CAMERA",
-////            "android.permission.WRITE_EXTERNAL_STORAGE"
-////    };
-
     @SuppressLint({"NewApi", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        fileName = getExternalCacheDir().getAbsolutePath();
-//        fileName += "/audiorecordtest.3gp";
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         setContentView(R.layout.activity_main);
-        //////////
-//        RecordButton recordButton = new RecordButton(this);
-//        PlayButton playButton = new PlayButton(this);
         /////////
         ImageButton plus = findViewById(R.id.plus);
         ImageButton addText = findViewById(R.id.text_create);
@@ -212,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         ImageButton search_do = findViewById(R.id.search_do);
         ImageButton voice_create = findViewById(R.id.voice_create);
         ////////
-        ConstraintLayout createVoice = findViewById(R.id.createVoice);
         ConstraintLayout createNote = findViewById(R.id.createNote);
         ConstraintLayout blur = findViewById(R.id.blur);
         ConstraintLayout blur1 = findViewById(R.id.blur1);
@@ -226,44 +103,27 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         TextView app_name = findViewById(R.id.app_name);
         TextView month_view = findViewById(R.id.month_view);
         TextView year_view = findViewById(R.id.year_view);
-        TextView yearChoose = findViewById(R.id.year_choose);
-        TextView yearChoose1 = findViewById(R.id.year_choose1);
-        TextView yearChoose2 = findViewById(R.id.year_choose2);
-        TextView yearChoose3 = findViewById(R.id.year_choose3);
-        TextView yearChoose4 = findViewById(R.id.year_choose4);
-        TextView jan = findViewById(R.id.jan);
-        TextView feb = findViewById(R.id.feb);
-        TextView mar = findViewById(R.id.mar);
-        TextView apr = findViewById(R.id.apr);
-        TextView may = findViewById(R.id.may);
-        TextView jun = findViewById(R.id.jun);
-        TextView jul = findViewById(R.id.jul);
-        TextView aug = findViewById(R.id.aug);
-        TextView sep = findViewById(R.id.sep);
-        TextView oct = findViewById(R.id.oct);
-        TextView nov = findViewById(R.id.nov);
-        TextView dec = findViewById(R.id.dec);
         TextView year1 = findViewById(R.id.year1);
         ////////
         TextView[] months = new TextView[12];
-        months[0] = jan;
-        months[1] = feb;
-        months[2] = mar;
-        months[3] = apr;
-        months[4] = may;
-        months[5] = jun;
-        months[6] = jul;
-        months[7] = aug;
-        months[8] = sep;
-        months[9] = oct;
-        months[10] = nov;
-        months[11] = dec;
+        months[0] = findViewById(R.id.jan);
+        months[1] = findViewById(R.id.feb);
+        months[2] = findViewById(R.id.mar);
+        months[3] = findViewById(R.id.apr);
+        months[4] = findViewById(R.id.may);
+        months[5] = findViewById(R.id.jun);
+        months[6] = findViewById(R.id.jul);
+        months[7] = findViewById(R.id.aug);
+        months[8] = findViewById(R.id.sep);
+        months[9] = findViewById(R.id.oct);
+        months[10] = findViewById(R.id.nov);
+        months[11] = findViewById(R.id.dec);
         TextView[] years = new TextView[5];
-        years[0] = yearChoose;
-        years[1] = yearChoose1;
-        years[2] = yearChoose2;
-        years[3] = yearChoose3;
-        years[4] = yearChoose4;
+        years[0] = findViewById(R.id.year_choose);
+        years[1] = findViewById(R.id.year_choose1);
+        years[2] = findViewById(R.id.year_choose2);
+        years[3] = findViewById(R.id.year_choose3);
+        years[4] = findViewById(R.id.year_choose4);
         TextView mon = findViewById(R.id.weekDay);
         TextView tue = findViewById(R.id.weekDay1);
         TextView wed = findViewById(R.id.weekDay2);
@@ -284,8 +144,11 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         LocalDate ld1 = LocalDate.now();
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd yyyy EEEE", Locale.ENGLISH);
         final DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy MMM dd EEEE", Locale.ENGLISH);
+        final DateTimeFormatter noteDayF = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+        notesDay = noteDayF.format(ld1);
         month_view.setText(dtf.format(ld1));
         year_view.setText(dtf1.format(ld1));
+
         mon.setTextColor(Color.parseColor("#9000FF00"));
         tue.setTextColor(Color.parseColor("#9000FF00"));
         wed.setTextColor(Color.parseColor("#9000FF00"));
@@ -293,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         fri.setTextColor(Color.parseColor("#9000FF00"));
         sat.setTextColor(Color.parseColor("#9000FF00"));
         sun.setTextColor(Color.parseColor("#9000FF00"));
+
         year_count = Integer.parseInt(String.valueOf(year_view.getText()));
         pageNumberForDay = calcPN();
         stLdate = LocalDate.now();
@@ -300,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         LocalDate ld = LocalDate.of(2022, Month.JANUARY, 1);
         year1.setText(year_view.getText());
         String days = dtf.format(ld);
-        for (int i = 0; i < months.length; i++) {
-            months[i].setText(days);
+        for (TextView month : months) {
+            month.setText(days);
             ld = ld.plusMonths(1);
             days = dtf.format(ld);
         }
@@ -311,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             savedYearNum = Integer.parseInt(String.valueOf(year_view.getText()));
             LocalDate localDate = LocalDate.now();
             String yearStr = dtf1.format(localDate);
-            for (int i = 0; i < years.length; i++) {
-                years[i].setText(yearStr);
+            for (TextView year : years) {
+                year.setText(yearStr);
                 localDate = localDate.plusYears(1);
                 yearStr = dtf1.format(localDate);
             }
@@ -336,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         for (int i = 0; i < months.length; i++) {
             int finalI = i;
             months[i].setOnClickListener(view -> {
+
 //                    mon.setTextColor(Color.parseColor("#9000FF00"));
 //                    tue.setTextColor(Color.parseColor("#9000FF00"));
 //                    wed.setTextColor(Color.parseColor("#9000FF00"));
@@ -347,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                 month_view.setText(months[finalI].getText());
                 pager1.setAdapter(pageAdapter1);
                 LocalDate localDate = LocalDate.of(year_count, finalI + 1, 1);
-                int pagenum = 0;
+                int pagenum;
                 savedYearNum = Integer.parseInt(String.valueOf(year_view.getText()));
                 year_count = Integer.parseInt(String.valueOf(year_view.getText()));
                 if (year_count > 2024) {
@@ -412,7 +277,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             });
         }
         ///////
-        year1.setOnClickListener(view -> {});
+        year1.setOnClickListener(view -> {
+        });
         list_create.setOnClickListener(view -> {
             startActivityForResult(
                     new Intent(getApplicationContext(), CreateListNote.class),
@@ -446,7 +312,19 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             plus.setRotation(0);
             blur.setVisibility(View.GONE);
         });
-        int i = 0;
+        addText.setOnClickListener(view -> {
+            startActivityForResult(
+                    new Intent(getApplicationContext(), CreateTextNote.class),
+                    REQUEST_CODE_ADD_NOTE
+            );
+            app_name.setVisibility(View.VISIBLE);
+            createNote.setVisibility(View.GONE);
+            plus.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+            plus.setRotation(0);
+            blur.setVisibility(View.GONE);
+//            noAds.setVisibility(View.GONE);
+        });
+
         blur1.setOnClickListener(view -> {
             month_choose.setVisibility(View.GONE);
             year_choose_layout.setVisibility(View.GONE);
@@ -465,18 +343,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             month_view.setVisibility(View.VISIBLE);
             search_do.setVisibility(View.GONE);
             searchTxt.setVisibility(View.GONE);
-        });
-        addText.setOnClickListener(view -> {
-            startActivityForResult(
-                    new Intent(getApplicationContext(), CreateTextNote.class),
-                    REQUEST_CODE_ADD_NOTE
-            );
-            app_name.setVisibility(View.VISIBLE);
-            createNote.setVisibility(View.GONE);
-            plus.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-            plus.setRotation(0);
-            blur.setVisibility(View.GONE);
-//            noAds.setVisibility(View.GONE);
         });
         plus.setOnClickListener(view -> {
             if (searchTxt.getVisibility() == View.VISIBLE) {
@@ -534,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         notesAdapter = new NotesAdapter(noteList, this, getApplicationContext());
         notesRecyclerView.setAdapter(notesAdapter);
 
-        getNotes(REQUEST_CODE_SHOW_NOTES, false);
+        getNotes(REQUEST_CODE_SHOW_NOTES, false, getApplicationContext());
     }
 
     private int calcPN() {
@@ -546,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //        TextView fri = findViewById(R.id.weekDay4);
 //        TextView sat = findViewById(R.id.weekDay5);
 //        TextView sun = findViewById(R.id.weekDay6);
-        int pagenum = 0;
+        int pagenum;
         if (year_count > 2024) {
             pagenum = (ld1.getDayOfYear() + 4 + 366 + 365 * (year_count - 2023)) / 7;
 //            DayOfWeek dayOfWeek = ld1.getDayOfWeek();
@@ -634,29 +500,37 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         }
         intent.putExtra("isViewOrUpdate", true);
         intent.putExtra("note", note);
-        if (deleteNote){
+        if (deleteNote) {
             intent.putExtra("deleteNote", true);
         }
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
 
-    private void getNotes(final int requestCode, final boolean isNoteDeleted) {
+    private static void getNotes(final int requestCode, final boolean isNoteDeleted, Context context) {
 
+        @SuppressLint("StaticFieldLeak")
         class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
 
             @Override
             protected List<Note> doInBackground(Void... voids) {
                 return NotesDatabase
-                        .getDatabase(getApplicationContext())
+                        .getDatabase(context)
                         .noteDao()
                         .getAllNotes();
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void onPostExecute(List<Note> notes) {
                 super.onPostExecute(notes);
                 if (requestCode == REQUEST_CODE_SHOW_NOTES) {
-                    noteList.addAll(notes);
+                    noteList.clear();
+                    notesAdapter.notifyDataSetChanged();
+                    for (int i = 0; i < notes.size(); i++) {
+                        if (notes.get(i).getDate().equals(notesDay)) {
+                            noteList.add(notes.get(i));
+                        }
+                    }
                     notesAdapter.notifyDataSetChanged();
                 } else if (requestCode == REQUEST_CODE_ADD_NOTE) {
                     noteList.add(0, notes.get(0));
@@ -680,24 +554,45 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
-            getNotes(REQUEST_CODE_ADD_NOTE, false);
+            getNotes(REQUEST_CODE_ADD_NOTE, false, getApplicationContext());
         } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null) {
-                getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted", false));
+                getNotes(REQUEST_CODE_UPDATE_NOTE,
+                        data.getBooleanExtra("isNoteDeleted", false),
+                        getApplicationContext());
             }
         }
     }
 
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (recorder != null) {
-//            recorder.release();
-//            recorder = null;
+    public static void ClickOnDay(TextView textView, String day, Context context) {
+        notesDay = day;
+        getNotes(REQUEST_CODE_SHOW_NOTES, false, context);
+    }
+
+//    public static void getTodayNotes(Context context){
+//        @SuppressLint("StaticFieldLeak")
+//        class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
+//
+//            @Override
+//            protected List<Note> doInBackground(Void... voids) {
+//                return NotesDatabase
+//                        .getDatabase(context)
+//                        .noteDao()
+//                        .getAllNotes();
+//            }
+//
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            protected void onPostExecute(List<Note> notes) {
+//                super.onPostExecute(notes);
+//                for (int i = 0; i < notes.size(); i++) {
+//                    if (notes.get(i).getDate().equals(notesDay)){
+//                        noteList.add(notes.get(i));
+//                    }
+//                }
+//            }
 //        }
-//        if (player != null) {
-//            player.release();
-//            player = null;
-//        }
+//        new GetNotesTask().execute();
 //    }
+
 }

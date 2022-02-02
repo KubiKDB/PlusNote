@@ -134,7 +134,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                 } else if (notes.get(position).isIs_voice()) {
                     holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone_dark);
                     holder.viewButton.setBackgroundResource(R.drawable.ic_microphone_dark);
-                } else {
+                } else if (notes.get(position).isIs_photo()){
                     holder.note_icon_text.setBackgroundResource(R.drawable.ic_textnote_dark);
                     holder.viewButton.setBackgroundResource(R.drawable.ic_textnote_dark);
                 }

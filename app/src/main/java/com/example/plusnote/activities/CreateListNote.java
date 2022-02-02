@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
@@ -230,6 +231,8 @@ public class CreateListNote extends AppCompatActivity {
         copyButtonList.setEnabled(true);
         shareButtonList.setEnabled(true);
         doneButtonList.setEnabled(false);
+
+        Log.e("DateSavedList", alreadyAvailableNote.getDate());
 
         deleteButtonList.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         editButtonList.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
@@ -470,7 +473,10 @@ public class CreateListNote extends AppCompatActivity {
             note.setIs_checked23(checkBoxes[22].isChecked());
             note.setIs_checked24(checkBoxes[23].isChecked());
             note.setIs_checked25(checkBoxes[24].isChecked());
+            note.setDate(alreadyAvailableNote.getDate());
             note.setId(alreadyAvailableNote.getId());
+        } else {
+            note.setDate(MainActivity.notesDay);
         }
 
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {

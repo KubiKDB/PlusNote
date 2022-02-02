@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -159,7 +160,6 @@ public class CreateVoiceNote extends AppCompatActivity {
                 deleteNote();
             }
             play_btn.setOnClickListener(view -> {
-                try {
                     if (isPlaying) {
                         playback_timer.stop();
                         pauseAudio();
@@ -179,12 +179,6 @@ public class CreateVoiceNote extends AppCompatActivity {
                         }
                     }
                     isPlaying = !isPlaying;
-                } catch (Exception e) {
-                    if (!getIntent().getBooleanExtra("deleteNote", false)) {
-                        Toast.makeText(this, "Audio has been deleted", Toast.LENGTH_LONG)
-                                /*.setGravity(Gravity.CENTER, 0, 0)*/.show();
-                    }
-                }
             });
             setViewOrUpdateNote();
         } else {
@@ -299,7 +293,12 @@ public class CreateVoiceNote extends AppCompatActivity {
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();
             mediaPlayer.start();
-        } catch (IOException e) {}
+        } catch (Exception e) {
+            if (!getIntent().getBooleanExtra("deleteNote", false)) {
+                Toast.makeText(this, "Audio has been deleted", Toast.LENGTH_LONG)
+                        /*.setGravity(Gravity.CENTER, 0, 0)*/.show();
+            }
+        }
 
         mediaPlayer.setOnCompletionListener(mediaPlayer -> {
             playback_timer.stop();
@@ -416,6 +415,8 @@ public class CreateVoiceNote extends AppCompatActivity {
         play_btn.setVisibility(View.VISIBLE);
         textView.setText(alreadyAvailableNote.getAudio_length());
 
+        Log.e("DateSavedAudio", alreadyAvailableNote.getDate());
+
         deleteButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         editButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         copyButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
@@ -441,7 +442,10 @@ public class CreateVoiceNote extends AppCompatActivity {
         }
 
         if (alreadyAvailableNote != null) {
+            note.setDate(alreadyAvailableNote.getDate());
             note.setId(alreadyAvailableNote.getId());
+        } else {
+            note.setDate(MainActivity.notesDay);
         }
 
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {
