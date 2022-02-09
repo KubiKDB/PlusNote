@@ -19,6 +19,7 @@
         <entry key="..\:/PlusNote/app/src/main/res/drawable-v24/text_icon.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/circle.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_baseline_arrow_forward_24.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_camera.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_camera2.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_camera_icon.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_image.xml" value="0.2703125" />
@@ -26,11 +27,13 @@
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_listnote.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_listnote_dark.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_microphone.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_microphone_recording.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_search.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_search_icon.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_textnote.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_textnote_dark.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/ic_video.xml" value="0.2703125" />
+        <entry key="..\:/PlusNote/app/src/main/res/drawable/microphone_recording.xml" value="0.28229166666666666" />
         <entry key="..\:/PlusNote/app/src/main/res/drawable/rectangle_round_stroke.xml" value="0.2703125" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/activity_camera.xml" value="0.25416666666666665" />
         <entry key="..\:/PlusNote/app/src/main/res/layout/activity_create_image_note.xml" value="0.25416666666666665" />

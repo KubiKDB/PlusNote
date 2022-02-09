@@ -8,10 +8,10 @@
         android:id="@+id/camera_preview_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#242424"
+        android:background="#000000"
         android:elevation="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.camera.view.PreviewView
             android:id="@+id/preview_video"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -58,7 +58,7 @@
             android:id="@+id/take_photo_video"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/ic_camera2"
+            android:background="@drawable/ic_camera"
             app:layout_constraintBottom_toBottomOf="@id/record_video_video"
             app:layout_constraintTop_toTopOf="@id/record_video_video"
             app:layout_constraintLeft_toRightOf="@id/record_video_video"

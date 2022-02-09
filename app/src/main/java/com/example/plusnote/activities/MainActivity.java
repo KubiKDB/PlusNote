@@ -157,10 +157,11 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         sat.setTextColor(Color.parseColor("#9000FF00"));
         sun.setTextColor(Color.parseColor("#9000FF00"));
 
+
         year_count = Integer.parseInt(String.valueOf(year_view.getText()));
-        pageNumberForDay = calcPN();
+        calcPN();
         stLdate = LocalDate.now();
-        pager1.setCurrentItem(pageNumberForDay);
+
         LocalDate ld = LocalDate.of(2022, Month.JANUARY, 1);
         year1.setText(year_view.getText());
         String days = dtf.format(ld);
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             ld = ld.plusMonths(1);
             days = dtf.format(ld);
         }
+
         year_view.setOnClickListener(view -> {
             year_choose_layout.setVisibility(View.VISIBLE);
             blur1.setVisibility(View.VISIBLE);
@@ -273,7 +275,9 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                 pager1.setCurrentItem(pagenum);
                 month_choose.setVisibility(View.GONE);
                 blur1.setVisibility(View.GONE);
-
+                LocalDate time = LocalDate.of(2022, finalI + 1, 1);
+                notesDay = noteDayF.format(time);
+                getNotes(REQUEST_CODE_SHOW_NOTES, false, getApplicationContext());
             });
         }
         ///////
@@ -303,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         });
         cameraCreate.setOnClickListener(view -> {
             startActivityForResult(
-                    new Intent(getApplicationContext(), PhotoActivity.class),
+                    new Intent(getApplicationContext(), CameraXActivity.class),
                     REQUEST_CODE_ADD_NOTE
             );
             app_name.setVisibility(View.VISIBLE);
@@ -403,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         getNotes(REQUEST_CODE_SHOW_NOTES, false, getApplicationContext());
     }
 
-    private int calcPN() {
+    private void calcPN() {
         LocalDate ld1 = LocalDate.now();
 //        TextView mon = findViewById(R.id.weekDay);
 //        TextView tue = findViewById(R.id.weekDay1);
@@ -413,6 +417,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //        TextView sat = findViewById(R.id.weekDay5);
 //        TextView sun = findViewById(R.id.weekDay6);
         int pagenum;
+
         if (year_count > 2024) {
             pagenum = (ld1.getDayOfYear() + 4 + 366 + 365 * (year_count - 2023)) / 7;
 //            DayOfWeek dayOfWeek = ld1.getDayOfWeek();
@@ -466,7 +471,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //                    break;
 //            }
         }
-        return pagenum;
+
+        ViewPager2 pager1 = findViewById(R.id.vp2);
+        FragmentStateAdapter pageAdapter1 = new MyAdapter2(this);
+        pager1.setAdapter(pageAdapter1);
+        pageNumberForDay = pagenum;
+        String temp = String.valueOf(pagenum);
+        pager1.setCurrentItem(Integer.parseInt(temp), false);
     }
 
     @Override
@@ -537,13 +548,25 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                     notesAdapter.notifyItemInserted(0);
                     notesRecyclerView.smoothScrollToPosition(0);
                 } else if (requestCode == REQUEST_CODE_UPDATE_NOTE) {
-                    noteList.remove(noteClickedPosition);
-                    if (isNoteDeleted) {
-                        notesAdapter.notifyItemRemoved(noteClickedPosition);
-                    } else {
-                        noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
-                        notesAdapter.notifyItemChanged(noteClickedPosition);
+//                    noteList.remove(noteClickedPosition);
+//                    if (isNoteDeleted) {
+//                        notesAdapter.notifyItemRemoved(noteClickedPosition);
+//                    } else {
+                    noteList.clear();
+                    notesAdapter.notifyDataSetChanged();
+                    for (int i = 0; i < notes.size(); i++) {
+                        if (notes.get(i).getDate().equals(notesDay)) {
+                            noteList.add(notes.get(i));
+                        }
                     }
+                    notesAdapter.notifyDataSetChanged();
+//                        if (notes.get(noteClickedPosition).getDate().equals(notesDay)){
+//                            noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
+//                            notesAdapter.notifyItemChanged(noteClickedPosition);
+//                        } else {
+//                            notesAdapter.notifyItemRemoved(noteClickedPosition);
+//                        }
+//                    }
                 }
             }
         }

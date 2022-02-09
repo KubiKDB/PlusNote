@@ -1,19 +1,12 @@
 package com.example.plusnote.activities;
 
-import static com.example.plusnote.activities.VideoActivity.isVideo;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -23,8 +16,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
@@ -34,6 +28,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.example.plusnote.R;
 import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.Note;
@@ -41,6 +38,7 @@ import com.example.plusnote.entities.Note;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("deprecation")
 public class CreateVoiceNote extends AppCompatActivity {
     private ImageButton
             cancelButtonVoice,
@@ -67,7 +65,8 @@ public class CreateVoiceNote extends AppCompatActivity {
     private boolean resumeAudio = false;
     private long elapsedMillis = 0;
     private SoundPool mSound1, mSound2;
-    private int mMelody = 1, mPlay;
+    private final int mMelody = 1;
+    private int mPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +92,30 @@ public class CreateVoiceNote extends AppCompatActivity {
         seekBar = findViewById(R.id.seekbar_audio);
         playback_timer = findViewById(R.id.playback_timer);
         textView = findViewById(R.id.audio_length);
+
+        inputVoiceTitle.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {}
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (!inputVoiceTitle.getText().toString().trim().isEmpty()){
+                    doneButtonVoice.setEnabled(true);
+                    doneButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FF00")));
+                    reminderButtonVoice.setEnabled(true);
+                    reminderButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
+                } else {
+                    doneButtonVoice.setEnabled(false);
+                    doneButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4000FF00")));
+                    reminderButtonVoice.setEnabled(false);
+                    reminderButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#7057ACF9")));
+                }
+            }
+        });
 
         record_voice.setOnClickListener(view -> {
             if (isRecording) {
@@ -123,12 +146,12 @@ public class CreateVoiceNote extends AppCompatActivity {
                     mPlay = mSound2.play(mMelody, (float) 0.5, (float) 0.5, 1, 0, 1);
                     try {
                         Thread.sleep(400);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                     startRecording();
                     doneButtonVoice.setEnabled(false);
                     doneButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4000FF00")));
-                    record_voice.setBackgroundResource(R.drawable.ic_microphone_recording);
+                    record_voice.setBackgroundResource(R.drawable.microphone_recording);
                     timer.setVisibility(View.VISIBLE);
                 }
             }
@@ -182,6 +205,8 @@ public class CreateVoiceNote extends AppCompatActivity {
             });
             setViewOrUpdateNote();
         } else {
+            reminderButtonVoice.setEnabled(false);
+            reminderButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#7057ACF9")));
             play_btn.setOnClickListener(view -> {
                 if (isPlaying) {
                     playback_timer.stop();
@@ -207,9 +232,7 @@ public class CreateVoiceNote extends AppCompatActivity {
             });
         }
         if (alreadyAvailableNote != null) {
-            deleteButtonVoice.setOnClickListener(view -> {
-                deleteNote();
-            });
+            deleteButtonVoice.setOnClickListener(view -> deleteNote());
         }
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -279,7 +302,7 @@ public class CreateVoiceNote extends AppCompatActivity {
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();
             mediaPlayer.start();
-        } catch (IOException e) {}
+        } catch (IOException ignored) {}
         playback_timer.start();
         play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
         updateRunnable();
@@ -323,14 +346,14 @@ public class CreateVoiceNote extends AppCompatActivity {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        outputFile = PhotoActivity.getOutputMediaFile(PhotoActivity.MEDIA_TYPE_AUDIO);
+        outputFile = CameraXActivity.getOutputMediaFile(CameraXActivity.MEDIA_TYPE_AUDIO);
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
         mediaRecorder.setOutputFile(outputFile);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
             mediaRecorder.prepare();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
         mediaRecorder.start();
@@ -381,6 +404,7 @@ public class CreateVoiceNote extends AppCompatActivity {
     }
 
     private void deleteNote() {
+        @SuppressLint("StaticFieldLeak")
         class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -433,21 +457,18 @@ public class CreateVoiceNote extends AppCompatActivity {
         final Note note = new Note();
         note.setTextNoteTitle(inputVoiceTitle.getText().toString());
         note.setIs_voice(true);
-        if (alreadyAvailableNote == null) {
-            note.setImage_path(outputFile.getAbsolutePath());
-            note.setAudio_length((String) timer.getText());
-        } else {
+        if (alreadyAvailableNote != null) {
             note.setImage_path(alreadyAvailableNote.getImage_path());
             note.setAudio_length(alreadyAvailableNote.getAudio_length());
-        }
-
-        if (alreadyAvailableNote != null) {
             note.setDate(alreadyAvailableNote.getDate());
             note.setId(alreadyAvailableNote.getId());
         } else {
+            note.setImage_path(outputFile.getAbsolutePath());
+            note.setAudio_length((String) timer.getText());
             note.setDate(MainActivity.notesDay);
         }
 
+        @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {

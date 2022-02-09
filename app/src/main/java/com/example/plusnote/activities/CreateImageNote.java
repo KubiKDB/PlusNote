@@ -1,64 +1,41 @@
 package com.example.plusnote.activities;
 
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
-import static com.example.plusnote.activities.VideoActivity.isVideo;
+import static com.example.plusnote.activities.VideoXActivity.isVideo;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.hardware.Camera;
-import android.media.CamcorderProfile;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.plusnote.R;
 import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.Note;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class CreateImageNote extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_IMAGE = 1;
@@ -89,6 +66,8 @@ public class CreateImageNote extends AppCompatActivity {
     private Runnable updateSeekbar;
     private Handler seekbarHandler;
     SeekBar seekbar_video;
+
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -161,7 +140,7 @@ public class CreateImageNote extends AppCompatActivity {
                     if (alreadyAvailableNote != null) {
                         outputFile = new File(alreadyAvailableNote.getImage_path());
                     }
-                    videoView.setVideoPath(outputFile.getAbsolutePath());
+                    videoView.setVideoPath(selectedImagePath);
                     needToRecreate = false;
                 }
                 videoView.start();
@@ -170,7 +149,7 @@ public class CreateImageNote extends AppCompatActivity {
                 if (alreadyAvailableNote != null) {
                     seekbar_video.setMax(Integer.parseInt(alreadyAvailableNote.getAudio_length().substring(3)) * 1000);
                 } else
-                    seekbar_video.setMax(Integer.parseInt(VideoActivity.timer_string.substring(3)) * 1000);
+                    seekbar_video.setMax(Integer.parseInt(VideoXActivity.timer_string.substring(3)) * 1000);
                 seekbarHandler = new Handler();
                 updateSeekbar = new Runnable() {
                     @Override
@@ -196,7 +175,6 @@ public class CreateImageNote extends AppCompatActivity {
             isPlaying = !isPlaying;
 
         });
-
         seekbar_video.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -264,31 +242,32 @@ public class CreateImageNote extends AppCompatActivity {
             if (isVideo) {
                 videoView.setVisibility(View.VISIBLE);
                 video_controller.setVisibility(View.VISIBLE);
-                videoView.setVideoPath(outputFile.getAbsolutePath());
+                videoView.setVideoPath(selectedImagePath);
                 videoView.seekTo(1);
-                video_length.setText(VideoActivity.timer_string);
+                video_length.setText(VideoXActivity.timer_string);
             } else {
-                Bitmap temp = BitmapFactory.decodeFile(selectedImagePath);
-                if (temp.getWidth() > temp.getHeight()) {
-                    if (temp.getWidth() == 1920) {
-                        temp = RotateBitmap(temp, 270);
-                    } else temp = RotateBitmap(temp, 90);
-                }
-                if (VideoActivity.fromGallery) {
-                    temp = RotateBitmap(temp, 0);
-                } else {
-                    image_icon.setBackgroundResource(R.drawable.ic_camera2);
-                }
-                imageView.setImageBitmap(temp);
+            Bitmap temp = BitmapFactory.decodeFile(selectedImagePath);
+            if (temp.getWidth() > temp.getHeight()) {
+                if (temp.getWidth() == 1920) {
+                    temp = RotateBitmap(temp, 270);
+                } else temp = RotateBitmap(temp, 90);
+            }
+            if (CameraXActivity.fromGallery) {
+                temp = RotateBitmap(temp, 0);
+            } else {
+                image_icon.setBackgroundResource(R.drawable.ic_camera);
+            }
+            imageView.setImageBitmap(temp);
             }
         }
         if (alreadyAvailableNote != null) {
             deleteButtonImage.setOnClickListener(view -> deleteNote());
         }
-
     }
 
     private void deleteNote() {
+        @SuppressWarnings("deprecation")
+        @SuppressLint("StaticFieldLeak")
         class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -344,13 +323,13 @@ public class CreateImageNote extends AppCompatActivity {
                 if (alreadyAvailableNote.isFrom_gallery()) {
                     temp = RotateBitmap(temp, 0);
                 } else {
-                    image_icon.setBackgroundResource(R.drawable.ic_camera2);
+                    image_icon.setBackgroundResource(R.drawable.ic_camera);
                 }
                 imageView.setImageBitmap(temp);
             }
         } catch (Exception e) {
             if (!getIntent().getBooleanExtra("deleteNote", false)) {
-                Toast.makeText(this, "Image has been deleted from gallery", Toast.LENGTH_LONG)
+                Toast.makeText(this, "Image has been deleted", Toast.LENGTH_LONG)
                         /*.setGravity(Gravity.CENTER, 0, 0)*/.show();
             }
         }
@@ -364,12 +343,9 @@ public class CreateImageNote extends AppCompatActivity {
         note.setTextNoteTitle(inputImageTitle.getText().toString());
         if (!getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             note.setImage_path(selectedImagePath);
-            note.setAudio_length(VideoActivity.timer_string);
-            note.setFrom_gallery(VideoActivity.fromGallery);
+            note.setAudio_length(VideoXActivity.timer_string);
+            note.setFrom_gallery(CameraXActivity.fromGallery);
             note.setIs_video(isVideo);
-            if (isVideo){
-                note.setImage_path(outputFile.getAbsolutePath());
-            }
             note.setDate(MainActivity.notesDay);
         } else {
             note.setIs_video(alreadyAvailableNote.isIs_video());
@@ -384,6 +360,8 @@ public class CreateImageNote extends AppCompatActivity {
             note.setId(alreadyAvailableNote.getId());
         }
 
+        @SuppressWarnings("deprecation")
+        @SuppressLint("StaticFieldLeak")
         class SaveNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {

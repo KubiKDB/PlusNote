@@ -1,21 +1,8 @@
 package com.example.plusnote.adapters;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
@@ -28,16 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plusnote.R;
-import com.example.plusnote.activities.CreateImageNote;
-import com.example.plusnote.activities.CreateListNote;
-import com.example.plusnote.activities.CreateTextNote;
-import com.example.plusnote.activities.MainActivity;
-import com.example.plusnote.activities.PhotoActivity;
-import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.Note;
 import com.example.plusnote.listeners.NotesListener;
 
-import java.io.IOException;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder>
@@ -112,62 +92,61 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 //            }
 //            isPlaying = !isPlaying;
 //        });
-        holder.note_icon_text.setOnClickListener(view -> {
-            holder.btnContainer.setVisibility(View.VISIBLE);
-        });
-        holder.titleOut.setOnClickListener(view -> {
-            if (isEnabled) {
-                if (notes.get(position).isIs_list()) {
-                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_listnote_dark);
-                    holder.viewButton.setBackgroundResource(R.drawable.ic_listnote_dark);
-                } else if (notes.get(position).isIs_image()) {
-                    if (notes.get(position).isIs_video()) {
-                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_video_dark);
-                        holder.viewButton.setBackgroundResource(R.drawable.ic_video_dark);
-                    } else if (notes.get(position).isFrom_gallery()){
-                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_image_dark);
-                        holder.viewButton.setBackgroundResource(R.drawable.ic_image_dark);
-                    } else {
-                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera2_dark);
-                        holder.viewButton.setBackgroundResource(R.drawable.ic_camera2_dark);
-                    }
-                } else if (notes.get(position).isIs_voice()) {
-                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone_dark);
-                    holder.viewButton.setBackgroundResource(R.drawable.ic_microphone_dark);
-                } else if (notes.get(position).isIs_photo()){
-                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_textnote_dark);
-                    holder.viewButton.setBackgroundResource(R.drawable.ic_textnote_dark);
-                }
-                holder.titleOut.setTextColor(Color.parseColor("#707FCEFF"));
-                holder.note_icon_text.setEnabled(false);
-                isEnabled = !isEnabled;
-            } else {
-                if (notes.get(position).isIs_list()) {
-                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_listnote);
-                    holder.viewButton.setBackgroundResource(R.drawable.ic_listnote);
-                } else if (notes.get(position).isIs_image()) {
-                    if (notes.get(position).isIs_video()) {
-                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_video);
-                        holder.viewButton.setBackgroundResource(R.drawable.ic_video);
-                    } else if (notes.get(position).isFrom_gallery()){
-                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_image);
-                        holder.viewButton.setBackgroundResource(R.drawable.ic_image);
-                    }else {
-                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera2);
-                        holder.viewButton.setBackgroundResource(R.drawable.ic_camera2);
-                    }
-                } else if (notes.get(position).isIs_voice()) {
-                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone);
-                    holder.viewButton.setBackgroundResource(R.drawable.ic_microphone);
-                } else {
-                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_textnote);
-                    holder.viewButton.setBackgroundResource(R.drawable.ic_textnote);
-                }
-                holder.titleOut.setTextColor(Color.parseColor("#7FCEFF"));
-                holder.note_icon_text.setEnabled(true);
-                isEnabled = !isEnabled;
-            }
-        });
+//        holder.titleOut.setOnClickListener(view -> {
+//            if (isEnabled) {
+//                if (notes.get(position).isIs_list()) {
+//                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_listnote_dark);
+//                    holder.viewButton.setBackgroundResource(R.drawable.ic_listnote_dark);
+//                } else if (notes.get(position).isIs_image()) {
+//                    if (notes.get(position).isIs_video()) {
+//                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_video_dark);
+//                        holder.viewButton.setBackgroundResource(R.drawable.ic_video_dark);
+//                    } else if (notes.get(position).isFrom_gallery()){
+//                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_image_dark);
+//                        holder.viewButton.setBackgroundResource(R.drawable.ic_image_dark);
+//                    } else {
+//                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera2_dark);
+//                        holder.viewButton.setBackgroundResource(R.drawable.ic_camera2_dark);
+//                    }
+//                } else if (notes.get(position).isIs_voice()) {
+//                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone_dark);
+//                    holder.viewButton.setBackgroundResource(R.drawable.ic_microphone_dark);
+//                } else if (notes.get(position).isIs_photo()){
+//                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_textnote_dark);
+//                    holder.viewButton.setBackgroundResource(R.drawable.ic_textnote_dark);
+//                }
+//                holder.titleOut.setTextColor(Color.parseColor("#707FCEFF"));
+//                holder.note_icon_text.setEnabled(false);
+//                isEnabled = !isEnabled;
+//            } else {
+//                if (notes.get(position).isIs_list()) {
+//                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_listnote);
+//                    holder.viewButton.setBackgroundResource(R.drawable.ic_listnote);
+//                } else if (notes.get(position).isIs_image()) {
+//                    if (notes.get(position).isIs_video()) {
+//                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_video);
+//                        holder.viewButton.setBackgroundResource(R.drawable.ic_video);
+//                    } else if (notes.get(position).isFrom_gallery()){
+//                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_image);
+//                        holder.viewButton.setBackgroundResource(R.drawable.ic_image);
+//                    }else {
+//                        holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera2);
+//                        holder.viewButton.setBackgroundResource(R.drawable.ic_camera2);
+//                    }
+//                } else if (notes.get(position).isIs_voice()) {
+//                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone);
+//                    holder.viewButton.setBackgroundResource(R.drawable.ic_microphone);
+//                } else {
+//                    holder.note_icon_text.setBackgroundResource(R.drawable.ic_textnote);
+//                    holder.viewButton.setBackgroundResource(R.drawable.ic_textnote);
+//                }
+//                holder.titleOut.setTextColor(Color.parseColor("#7FCEFF"));
+//                holder.note_icon_text.setEnabled(true);
+//                isEnabled = !isEnabled;
+//            }
+//        });
+
+        holder.note_icon_text.setOnClickListener(view -> holder.btnContainer.setVisibility(View.VISIBLE));
         if (notes.get(position).isIs_list()) {
             holder.note_icon_text.setBackgroundResource(R.drawable.ic_listnote);
             holder.viewButton.setBackgroundResource(R.drawable.ic_listnote);
@@ -175,12 +154,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             if (notes.get(position).isIs_video()) {
                 holder.note_icon_text.setBackgroundResource(R.drawable.ic_video);
                 holder.viewButton.setBackgroundResource(R.drawable.ic_video);
-            } else if (notes.get(position).isFrom_gallery()){
+            } else if (notes.get(position).isFrom_gallery()) {
                 holder.note_icon_text.setBackgroundResource(R.drawable.ic_image);
                 holder.viewButton.setBackgroundResource(R.drawable.ic_image);
             } else {
-                holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera2);
-                holder.viewButton.setBackgroundResource(R.drawable.ic_camera2);
+                holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera);
+                holder.viewButton.setBackgroundResource(R.drawable.ic_camera);
             }
         } else if (notes.get(position).isIs_voice()) {
             holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone);
@@ -193,14 +172,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             notesListener.onNoteClicked(notes.get(position), position);
             holder.btnContainer.setVisibility(View.GONE);
         });
-        holder.deleteButton.setOnClickListener(view -> {
-            notesListener.onNoteClicked(notes.get(position), position, true);
-        });
-        holder.cancelButton.setOnClickListener(view -> {
-            holder.btnContainer.setVisibility(View.GONE);
-        });
-        holder.btnContainer.setOnClickListener(view -> {
-        });
+        holder.deleteButton.setOnClickListener(view -> notesListener.onNoteClicked(notes.get(position), position, true));
+        holder.cancelButton.setOnClickListener(view -> holder.btnContainer.setVisibility(View.GONE));
+        holder.btnContainer.setOnClickListener(view -> {});
 //        holder.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 //            @Override
 //            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

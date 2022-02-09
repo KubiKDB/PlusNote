@@ -82,8 +82,8 @@ public class PagerFragment2 extends Fragment {
                 dvs[weekDayToNum(ld.getDayOfWeek())].setText(days);
                 int finalS = s;
                 dvs[s].setOnClickListener(view -> {
-                    for (int z = 0; z < dvs.length; z++) {
-                        dvs[z].setTextColor(Color.parseColor("#9000FF00"));
+                    for (TextView dv : dvs) {
+                        dv.setTextColor(Color.parseColor("#9000FF00"));
 //                        week_ds[z].setTextColor(Color.parseColor("#9000FF00"));
                     }
                     MainActivity.pnc = pageNumber;
@@ -105,8 +105,8 @@ public class PagerFragment2 extends Fragment {
                 dvs[weekDayToNum(ld.getDayOfWeek())].setText(days);
                 int finalS = s;
                 dvs[s].setOnClickListener(view -> {
-                    for (int z = 0; z < dvs.length; z++) {
-                        dvs[z].setTextColor(Color.parseColor("#9000FF00"));
+                    for (TextView dv : dvs) {
+                        dv.setTextColor(Color.parseColor("#9000FF00"));
 //                        week_ds[z].setTextColor(Color.parseColor("#9000FF00"));
                     }
                     MainActivity.pnc = pageNumber;
@@ -122,25 +122,25 @@ public class PagerFragment2 extends Fragment {
         if (pageNumber == MainActivity.pageNumberForDay) {
             final DateTimeFormatter twoDayNum = DateTimeFormatter.ofPattern("dd", Locale.ENGLISH);
             String check = twoDayNum.format(MainActivity.stLdate);
-            if (check.equals(dvs[0].getText())) {
+            if (check.contentEquals(dvs[0].getText())) {
                 dvs[0].setTextColor(Color.parseColor("#FFA500"));
             }
-            if (check.equals(dvs[1].getText())) {
+            if (check.contentEquals(dvs[1].getText())) {
                 dvs[1].setTextColor(Color.parseColor("#FFA500"));
             }
-            if (check.equals(dvs[2].getText())) {
+            if (check.contentEquals(dvs[2].getText())) {
                 dvs[2].setTextColor(Color.parseColor("#FFA500"));
             }
-            if (check.equals(dvs[3].getText())) {
+            if (check.contentEquals(dvs[3].getText())) {
                 dvs[3].setTextColor(Color.parseColor("#FFA500"));
             }
-            if (check.equals(dvs[4].getText())) {
+            if (check.contentEquals(dvs[4].getText())) {
                 dvs[4].setTextColor(Color.parseColor("#FFA500"));
             }
-            if (check.equals(dvs[5].getText())) {
+            if (check.contentEquals(dvs[5].getText())) {
                 dvs[5].setTextColor(Color.parseColor("#FFA500"));
             }
-            if (check.equals(dvs[6].getText())) {
+            if (check.contentEquals(dvs[6].getText())) {
                 dvs[6].setTextColor(Color.parseColor("#FFA500"));
             }
         }

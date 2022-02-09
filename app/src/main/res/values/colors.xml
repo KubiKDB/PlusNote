@@ -9,12 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#FF0000FF</color>
     <color name="yellow">#FFEA00</color>
-    <color name="headColor">#242424</color>
+    <color name="headColor">#1F1F1F</color>
+    <color name="icons_fill">#000000</color>
     <color name="HeadTextColor">#9000FF00</color>
     <color name="icons">#7000FF00</color>
     <color name="light_blue_text">#7FCEFF</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="theme121212">#121212</color>
+    <color name="theme121212">#000000</color>
     <color name="white_for_dark_mode">#999999</color>
     <color name="orange">#FFA500</color>
     <color name="light_blue">#57ACF9</color>
