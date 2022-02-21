@@ -14,4 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor" tools:targetApi="l">@color/theme121212</item>
     </style>
+    <style name="timePicker">
+        <item name="android:textColorPrimary">@color/light_blue_text</item> <!-- color for digits -->
+        <item name="android:textColor">@color/light_blue_text</item> <!-- color for colon -->
+        <item name="android:colorControlNormal">@color/light_blue_text</item> <!-- color for (horizontal) delimeters -->
+        <item name="android:textSize">@dimen/time_picker</item>
+    </style>
 </resources>

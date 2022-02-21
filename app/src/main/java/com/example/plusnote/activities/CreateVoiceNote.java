@@ -2,6 +2,9 @@ package com.example.plusnote.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.MediaRouteButton;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +13,15 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.MediaScannerConnection;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,9 +32,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import com.example.plusnote.R;
@@ -37,6 +45,13 @@ import com.example.plusnote.entities.Note;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @SuppressWarnings("deprecation")
 public class CreateVoiceNote extends AppCompatActivity {
@@ -45,7 +60,6 @@ public class CreateVoiceNote extends AppCompatActivity {
             deleteButtonVoice,
             editButtonVoice,
             reminderButtonVoice,
-            copyButtonVoice,
             shareButtonVoice,
             doneButtonVoice,
             play_btn,
@@ -67,22 +81,40 @@ public class CreateVoiceNote extends AppCompatActivity {
     private SoundPool mSound1, mSound2;
     private final int mMelody = 1;
     private int mPlay;
+    private ImageButton
+            save_reminder_voice,
+            delete_reminder_voice;
+    ConstraintLayout
+            cl_voice,
+            blur_reminder_voice;
+    TextView date_show_voice;
+    boolean isReminder = false;
+    boolean isPast = false;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
+    public static boolean isActivated = false;
+    private int alarmID = 0;
+    String reminderTime;
+    private boolean isEdited;
+    private ImageButton cancel_reminder_choose_voice;
+    private ImageButton reminder_button_voice2;
+    private TextView time_view_note_voice;
 
+    @SuppressLint("BatteryLife")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_voice_note);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mSound1 = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        mSound1.load(this, R.raw.start_recording, 1);
+        mSound1.load(this, R.raw.record_sound, 1);
         mSound2 = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        mSound2.load(this, R.raw.end_recording, 1);
+        mSound2.load(this, R.raw.record_sound, 1);
         ///////
         cancelButtonVoice = findViewById(R.id.cancelButtonVoice);
         deleteButtonVoice = findViewById(R.id.deleteButtonVoice);
         editButtonVoice = findViewById(R.id.editButtonVoice);
         reminderButtonVoice = findViewById(R.id.reminderButtonVoice);
-        copyButtonVoice = findViewById(R.id.copyButtonVoice);
         shareButtonVoice = findViewById(R.id.shareButtonVoice);
         doneButtonVoice = findViewById(R.id.doneButtonVoice);
         record_voice = findViewById(R.id.voice_icon);
@@ -92,10 +124,115 @@ public class CreateVoiceNote extends AppCompatActivity {
         seekBar = findViewById(R.id.seekbar_audio);
         playback_timer = findViewById(R.id.playback_timer);
         textView = findViewById(R.id.audio_length);
+        cancel_reminder_choose_voice = findViewById(R.id.cancel_reminder_choose_voice);
+        reminder_button_voice2 = findViewById(R.id.reminderButtonVoice2);
+        time_view_note_voice = findViewById(R.id.time_view_note_voice);
+        ////////
+        save_reminder_voice = findViewById(R.id.save_reminder_voice);
+        delete_reminder_voice = findViewById(R.id.delete_reminder_voice);
+        cl_voice = findViewById(R.id.tp_container_voice);
+        date_show_voice = findViewById(R.id.date_show_voice);
+        blur_reminder_voice = findViewById(R.id.blur_reminder_voice);
+        save_reminder_voice.setEnabled(false);
+        save_reminder_voice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4000FF00")));
+        TimePicker timePicker = findViewById(R.id.time_picker_voice);
+        timePicker.setIs24HourView(true);
+        timePicker.setOnTimeChangedListener((timePicker1, i, i1) -> {
+            reminderTime = i + ":" + i1 + ":" + MainActivity.notesDay;
+            save_reminder_voice.setEnabled(true);
+            save_reminder_voice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FF00")));
+
+            final DateTimeFormatter hhmm = DateTimeFormatter.ofPattern("HH:mm");
+            final DateTimeFormatter noteDayF = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+
+            LocalDate ld = LocalDate.now();
+            LocalTime ldt = LocalTime.from(LocalTime.now());
+
+            String ld1 = noteDayF.format(ld);
+            ld = LocalDate.from(noteDayF.parse(ld1));
+            String[] split = hhmm.format(ldt).split(":");
+
+            LocalDate test;
+            if (alreadyAvailableNote != null) {
+                test = LocalDate.from(noteDayF.parse(alreadyAvailableNote.getDate()));
+            } else {
+                test = LocalDate.from(noteDayF.parse(MainActivity.notesDay));
+            }
+
+            if (test.isEqual(ld)) {
+                if (Integer.parseInt(split[0]) > i) {
+                    isPast = true;
+                } else isPast = Integer.parseInt(split[0]) == i && Integer.parseInt(split[1]) > i1;
+            } else isPast = test.isBefore(ld);
+        });
+        delete_reminder_voice.setOnClickListener(view -> {
+            if (alreadyAvailableNote.isReminderSet()){
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmBroadcast.class);
+                alarmID = alreadyAvailableNote.getReminder_id();
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(),
+                        alarmID,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+                isReminder = false;
+                alreadyAvailableNote.setReminder_id(0);
+                saveNote();
+            }
+        });
+        reminderButtonVoice.setOnClickListener(view -> setReminder());
+        save_reminder_voice.setOnClickListener(view -> {
+            if (alreadyAvailableNote != null){
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmBroadcast.class);
+                alarmID = alreadyAvailableNote.getReminder_id();
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(),
+                        alarmID,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+
+                alreadyAvailableNote.setReminder_id(0);
+            }
+
+            if (isPast) {
+                Toast.makeText(this, "Set future time", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String[] temp = reminderTime.split(":");
+            setAlarm(
+                    String.valueOf(inputVoiceTitle.getText()),
+                    temp[2],
+                    temp[0] + ":" + temp[1]
+            );
+
+            isReminder = true;
+
+            cl_voice.setVisibility(View.GONE);
+            blur_reminder_voice.setVisibility(View.GONE);
+            saveNote();
+        });
+        blur_reminder_voice.setOnClickListener(view -> {
+            blur_reminder_voice.setVisibility(View.GONE);
+            cl_voice.setVisibility(View.GONE);
+        });
+        cancel_reminder_choose_voice.setOnClickListener(v -> {
+            blur_reminder_voice.setVisibility(View.GONE);
+            cl_voice.setVisibility(View.GONE);
+        });
+        time_view_note_voice.setOnClickListener(v -> setReminder());
+        ////////
+
+        shareButtonVoice.setOnClickListener(view -> share());
 
         inputVoiceTitle.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             public void beforeTextChanged(CharSequence s, int start,
                                           int count, int after) {
@@ -103,7 +240,7 @@ public class CreateVoiceNote extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if (!inputVoiceTitle.getText().toString().trim().isEmpty()){
+                if (!inputVoiceTitle.getText().toString().trim().isEmpty()) {
                     doneButtonVoice.setEnabled(true);
                     doneButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FF00")));
                     reminderButtonVoice.setEnabled(true);
@@ -176,34 +313,41 @@ public class CreateVoiceNote extends AppCompatActivity {
             inputVoiceTitle.post(() -> inputVoiceTitle.setSelection(inputVoiceTitle.getText().length()));
             doneButtonVoice.setEnabled(true);
             doneButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FF00")));
+            isEdited = true;
         });
         if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
+            setViewOrUpdateNote();
             if (getIntent().getBooleanExtra("deleteNote", false)) {
                 deleteNote();
             }
+            if (getIntent().getBooleanExtra("shareNote", false)) {
+                share();
+            }
+            if (getIntent().getBooleanExtra("setReminder", false)){
+                setReminder();
+            }
             play_btn.setOnClickListener(view -> {
-                    if (isPlaying) {
-                        playback_timer.stop();
-                        pauseAudio();
-                        play_btn.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+                if (isPlaying) {
+                    playback_timer.stop();
+                    pauseAudio();
+                    play_btn.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+                } else {
+                    if (!resumeAudio) {
+                        playback_timer.setBase(SystemClock.elapsedRealtime());
+                        playback_timer.start();
+                        playAudio(alreadyAvailableNote.getImage_path());
+                        play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+                        resumeAudio = !resumeAudio;
                     } else {
-                        if (!resumeAudio) {
-                            playback_timer.setBase(SystemClock.elapsedRealtime());
-                            playback_timer.start();
-                            playAudio(alreadyAvailableNote.getImage_path());
-                            play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
-                            resumeAudio = !resumeAudio;
-                        } else {
-                            playback_timer.setBase(SystemClock.elapsedRealtime() - elapsedMillis);
-                            playback_timer.start();
-                            play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
-                            resumeAudio();
-                        }
+                        playback_timer.setBase(SystemClock.elapsedRealtime() - elapsedMillis);
+                        playback_timer.start();
+                        play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
+                        resumeAudio();
                     }
-                    isPlaying = !isPlaying;
+                }
+                isPlaying = !isPlaying;
             });
-            setViewOrUpdateNote();
         } else {
             reminderButtonVoice.setEnabled(false);
             reminderButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#7057ACF9")));
@@ -274,6 +418,98 @@ public class CreateVoiceNote extends AppCompatActivity {
             }
         });
     }
+    private void setReminder() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(inputVoiceTitle.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
+
+
+        final DateTimeFormatter ndf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+        LocalDate ld = LocalDate.now();
+        LocalDate ld1;
+        if (alreadyAvailableNote != null) {
+            ld1 = LocalDate.from(ndf.parse(alreadyAvailableNote.getDate()));
+        } else {
+            ld1 = LocalDate.from(ndf.parse(MainActivity.notesDay));
+        }
+        if (ld.isAfter(ld1)) {
+            Toast.makeText(this, "Set future date", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        blur_reminder_voice.setVisibility(View.VISIBLE);
+        cl_voice.setVisibility(View.VISIBLE);
+        @SuppressLint("SimpleDateFormat") final DateFormat noteDayF = new SimpleDateFormat("yyyy_MM_dd");
+        @SuppressLint("SimpleDateFormat") final DateFormat forDay = new SimpleDateFormat("dd MMM yyyy");
+        Date date = null;
+        if (alreadyAvailableNote == null) {
+            try {
+                date = noteDayF.parse(MainActivity.notesDay);
+            } catch (ParseException ignored) {
+            }
+            String temp = null;
+            if (date != null) {
+                temp = forDay.format(date);
+            }
+            date_show_voice.setText(temp);
+        } else {
+            try {
+                date = noteDayF.parse(alreadyAvailableNote.getDate());
+            } catch (ParseException ignored) {
+            }
+            String temp = null;
+            if (date != null) {
+                temp = forDay.format(date);
+            }
+            date_show_voice.setText(temp);
+        }
+
+    }
+
+    private void setAlarm(String text, String date, String time) {
+        Intent intent = new Intent(this, AlarmBroadcast.class);
+        intent.putExtra("event", text);
+        intent.putExtra("time", time);
+        intent.putExtra("date", date);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        alarmID = (int) System.currentTimeMillis();
+        pendingIntent = PendingIntent.getBroadcast(
+                this,
+                alarmID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE);
+        String dateandtime = date + " " + time;
+        @SuppressLint("SimpleDateFormat")
+        DateFormat formatter = new SimpleDateFormat("yyyy_MM_dd hh:mm");
+        Date date1 = null;
+        try {
+            date1 = formatter.parse(dateandtime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long temp = date1.getTime();
+        String[] ts = time.split(":");
+        if (ts[0].equals("12")){
+            temp += 43200000;
+        }
+
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,temp, pendingIntent);
+    }
+
+    private void share() {
+        MediaScannerConnection.scanFile(this, new String[]{alreadyAvailableNote.getImage_path()},
+                null, (path, uri) -> {
+                    Intent shareIntent = new Intent(
+                            Intent.ACTION_SEND);
+                    shareIntent.setType("audio/*");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                    shareIntent
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                    startActivity(Intent.createChooser(shareIntent,
+                            "Share Audio"));
+                });
+    }
 
     private void stopAudio() {
         mediaPlayer.stop();
@@ -290,6 +526,7 @@ public class CreateVoiceNote extends AppCompatActivity {
     }
 
     private void resumeAudio() {
+        isPlaying = true;
         mediaPlayer.start();
         playback_timer.start();
         play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
@@ -303,6 +540,7 @@ public class CreateVoiceNote extends AppCompatActivity {
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (IOException ignored) {}
+        isPlaying = false;
         playback_timer.start();
         play_btn.setBackgroundResource(R.drawable.ic_baseline_pause_24);
         updateRunnable();
@@ -311,6 +549,8 @@ public class CreateVoiceNote extends AppCompatActivity {
 
     private void playAudio(String path) {
         mediaPlayer = new MediaPlayer();
+
+        isPlaying = true;
 
         try {
             mediaPlayer.setDataSource(path);
@@ -347,9 +587,9 @@ public class CreateVoiceNote extends AppCompatActivity {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         outputFile = CameraXActivity.getOutputMediaFile(CameraXActivity.MEDIA_TYPE_AUDIO);
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
         mediaRecorder.setOutputFile(outputFile);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(outputFile)));
 
         try {
             mediaRecorder.prepare();
@@ -379,14 +619,10 @@ public class CreateVoiceNote extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (isPlaying) {
+        try {
             stopAudio();
-        }
-
-        if (isRecording) {
             stopRecording();
-        }
+        } catch (Exception ignored){}
     }
 
     private boolean checkPermissions() {
@@ -404,6 +640,20 @@ public class CreateVoiceNote extends AppCompatActivity {
     }
 
     private void deleteNote() {
+        if (alreadyAvailableNote.isReminderSet()){
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, AlarmBroadcast.class);
+            alarmID = alreadyAvailableNote.getReminder_id();
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(),
+                    alarmID,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE);
+            alarmManager.cancel(pendingIntent);
+            isReminder = false;
+            alreadyAvailableNote.setReminder_id(0);
+            saveNote();
+        }
         @SuppressLint("StaticFieldLeak")
         class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
@@ -429,7 +679,6 @@ public class CreateVoiceNote extends AppCompatActivity {
         inputVoiceTitle.setEnabled(false);
         inputVoiceTitle.setVisibility(View.VISIBLE);
         editButtonVoice.setEnabled(true);
-        copyButtonVoice.setEnabled(true);
         shareButtonVoice.setEnabled(true);
         doneButtonVoice.setEnabled(false);
         record_voice.setEnabled(false);
@@ -439,11 +688,32 @@ public class CreateVoiceNote extends AppCompatActivity {
         play_btn.setVisibility(View.VISIBLE);
         textView.setText(alreadyAvailableNote.getAudio_length());
 
+        if (alreadyAvailableNote.isReminderSet()){
+            delete_reminder_voice.setVisibility(View.VISIBLE);
+            cancel_reminder_choose_voice.setVisibility(View.GONE);
+        }
+
+        if (alreadyAvailableNote.isReminderSet()){
+            delete_reminder_voice.setVisibility(View.VISIBLE);
+            cancel_reminder_choose_voice.setVisibility(View.GONE);
+
+            reminder_button_voice2.setVisibility(View.VISIBLE);
+            reminderButtonVoice.setVisibility(View.INVISIBLE);
+            time_view_note_voice.setVisibility(View.VISIBLE);
+            String[] split = alreadyAvailableNote.getReminder_time().split(":");
+            if (split[1].length() == 1) {
+                split[1] = "0" + split[1];
+            }
+            if (split[0].length() == 1) {
+                split[0] = "0" + split[0];
+            }
+            time_view_note_voice.setText(split[0] + ":" + split[1]);
+        }
+
         Log.e("DateSavedAudio", alreadyAvailableNote.getDate());
 
         deleteButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         editButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
-        copyButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         shareButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         doneButtonVoice.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4000FF00")));
 
@@ -457,15 +727,53 @@ public class CreateVoiceNote extends AppCompatActivity {
         final Note note = new Note();
         note.setTextNoteTitle(inputVoiceTitle.getText().toString());
         note.setIs_voice(true);
+        if (isEdited) {
+            if (alreadyAvailableNote.isReminderSet()) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmBroadcast.class);
+                alarmID = alreadyAvailableNote.getReminder_id();
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(),
+                        alarmID,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+
+                alreadyAvailableNote.setReminder_id(0);
+            }
+            reminderTime = alreadyAvailableNote.getReminder_time();
+
+            String[] temp = reminderTime.split(":");
+            setAlarm(
+                    String.valueOf(inputVoiceTitle.getText()),
+                    temp[2],
+                    temp[0] + ":" + temp[1]
+            );
+        }
         if (alreadyAvailableNote != null) {
             note.setImage_path(alreadyAvailableNote.getImage_path());
             note.setAudio_length(alreadyAvailableNote.getAudio_length());
             note.setDate(alreadyAvailableNote.getDate());
             note.setId(alreadyAvailableNote.getId());
+            note.setReminderSet(isReminder);
+            if (reminderTime != null) {
+                note.setReminder_time(reminderTime);
+                note.setReminderSet(true);
+                note.setReminder_id(alarmID);
+            } else {
+                note.setReminder_time(alreadyAvailableNote.getReminder_time());
+                note.setReminder_id(alreadyAvailableNote.getReminder_id());
+            }
         } else {
             note.setImage_path(outputFile.getAbsolutePath());
             note.setAudio_length((String) timer.getText());
             note.setDate(MainActivity.notesDay);
+            if (isReminder) {
+                note.setReminder_time(reminderTime);
+                note.setReminder_id(alarmID);
+            }
+            note.setReminderSet(isReminder);
         }
 
         @SuppressLint("StaticFieldLeak")

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/weekDaysCount"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/headColor"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/weekDay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:text="MON"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/weekDay1" />
+
+        <TextView
+            android:id="@+id/weekDay1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TUE"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/weekDay"
+            app:layout_constraintRight_toLeftOf="@+id/weekDay2" />
+
+        <TextView
+            android:id="@+id/weekDay2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="WED"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/weekDay1"
+            app:layout_constraintRight_toLeftOf="@+id/weekDay3" />
+
+        <TextView
+            android:id="@+id/weekDay3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="THU"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/weekDay2"
+            app:layout_constraintRight_toLeftOf="@+id/weekDay4" />
+
+        <TextView
+            android:id="@+id/weekDay4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="FRI"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/weekDay3"
+            app:layout_constraintRight_toLeftOf="@+id/weekDay5" />
+
+        <TextView
+            android:id="@+id/weekDay5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="SAT"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/weekDay4"
+            app:layout_constraintRight_toLeftOf="@+id/weekDay6" />
+
+        <TextView
+            android:id="@+id/weekDay6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:text="SUN"
+            android:textColor="@color/HeadTextColor"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toRightOf="@id/weekDay5"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

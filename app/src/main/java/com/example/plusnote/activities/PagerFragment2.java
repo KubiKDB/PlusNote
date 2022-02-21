@@ -35,6 +35,7 @@ public class PagerFragment2 extends Fragment {
     }
 
     public PagerFragment2() {
+
     }
 
     @Override
@@ -74,7 +75,11 @@ public class PagerFragment2 extends Fragment {
         }
         int i = 1;
         if (pageNumber % 2 == 1) {
-            i = 2 + (pageNumber - 1) * 7;
+//            if (!WeekPager.weekType){
+//                i = 1 + (pageNumber - 1) * 7;
+//            } else {
+                i = 2 + (pageNumber - 1) * 7;
+//            }
             ld = ld.plusDays(i);
             days = dtf.format(ld);
             for (int s = 0; s < 7; s++) {
@@ -97,7 +102,11 @@ public class PagerFragment2 extends Fragment {
             }
         }
         if (pageNumber % 2 == 0) {
-            i = 2 + (pageNumber - 1) * 7;
+//            if (!WeekPager.weekType){
+//                i = 1 + (pageNumber - 1) * 7;
+//            } else {
+                i = 2 + (pageNumber - 1) * 7;
+//            }
             ld = ld.plusDays(i);
             days = dtf.format(ld);
             for (int s = 0; s < 7; s++) {
@@ -167,5 +176,9 @@ public class PagerFragment2 extends Fragment {
                 return 0;
         }
     }
+
+//    public static void recreatePager(){
+//
+//    }
 }
 

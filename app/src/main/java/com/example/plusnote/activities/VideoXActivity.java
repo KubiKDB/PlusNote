@@ -5,15 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.core.VideoCapture;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,17 +18,17 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.util.Size;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.plusnote.R;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -67,7 +64,9 @@ public class VideoXActivity extends AppCompatActivity {
     private VideoCapture videoCapture;
     private Chronometer chronometer;
     public static String timer_string;
-
+    private SoundPool mSound1, mSound2;
+    private final int mMelody = 1;
+    private int mPlay;
 
     private Executor getExecutor() {
         return ContextCompat.getMainExecutor(this);
@@ -78,6 +77,10 @@ public class VideoXActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_record_layout);
+        mSound1 = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        mSound1.load(this, R.raw.video_sound, 1);
+        mSound2 = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        mSound2.load(this, R.raw.record_sound, 1);
         mPreviewView = findViewById(R.id.preview_video);
         take_photo_video = findViewById(R.id.take_photo_video);
         select_existing_image_video = findViewById(R.id.select_existing_image_video);
@@ -88,6 +91,8 @@ public class VideoXActivity extends AppCompatActivity {
             if (!isRecording) {
                 recordVideo();
             } else {
+                AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+                mPlay = mSound1.play(mMelody, (float) 0.3, (float) 0.3, 1, 0, 1);
                 chronometer.stop();
                 record_video_video.setBackgroundResource(R.drawable.ic_video);
                 isRecording = false;
@@ -103,7 +108,6 @@ public class VideoXActivity extends AppCompatActivity {
                 pcp.unbindAll();
 
                 Preview preview = new Preview.Builder()
-//                        .setTargetResolution(new Size(1920,1080))
                         .build();
                 preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
 
@@ -115,12 +119,11 @@ public class VideoXActivity extends AppCompatActivity {
                         .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
                         .build();
 
-                Camera camera = pcp.bindToLifecycle(VideoXActivity.this, selector, preview, videoCapture);
+                pcp.bindToLifecycle(VideoXActivity.this, selector, preview, videoCapture);
             } else {
                 pcp.unbindAll();
 
                 Preview preview = new Preview.Builder()
-//                        .setTargetResolution(new Size(1920,1080))
                         .build();
                 preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
 
@@ -132,7 +135,7 @@ public class VideoXActivity extends AppCompatActivity {
                         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                         .build();
 
-                Camera camera = pcp.bindToLifecycle(VideoXActivity.this, selector, preview, videoCapture);
+                pcp.bindToLifecycle(VideoXActivity.this, selector, preview, videoCapture);
             }
             change = !change;
         });
@@ -166,8 +169,9 @@ public class VideoXActivity extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
 
         take_photo_video.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), CameraXActivity.class);
-            startActivityForResult(intent, 1001);
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+            finish();
         });
     }
 
@@ -182,6 +186,11 @@ public class VideoXActivity extends AppCompatActivity {
     private void recordVideo() {
         ContentValues contentValues = new ContentValues();
         record_video_video.setBackgroundResource(R.drawable.ic_video_recording);
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        mPlay = mSound1.play(mMelody, (float) 0.5, (float) 0.5, 1, 0, 1);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ignored) {}
 
         if (Build.VERSION.SDK_INT >= 29) {
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH,
@@ -208,7 +217,7 @@ public class VideoXActivity extends AppCompatActivity {
                     public void onVideoSaved(@NonNull VideoCapture.OutputFileResults outputFileResults) {
                         CameraXActivity.fromGallery = false;
                         isVideo = true;
-                        Toast.makeText(VideoXActivity.this, "Video Saved", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(VideoXActivity.this, "Video Saved", Toast.LENGTH_SHORT).show();
                         CreateImageNote.selectedImagePath = getPathFromUri(outputFileResults.getSavedUri());
                         Intent intent = new Intent(getApplicationContext(), CreateImageNote.class);
                         startActivityForResult(intent, 1001);
@@ -216,7 +225,7 @@ public class VideoXActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause) {
-                        Toast.makeText(VideoXActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(VideoXActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -239,7 +248,6 @@ public class VideoXActivity extends AppCompatActivity {
         pcp.unbindAll();
 
         Preview preview = new Preview.Builder()
-//                        .setTargetResolution(new Size(1920,1080))
                 .build();
         preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
 

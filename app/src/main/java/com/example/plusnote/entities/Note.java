@@ -23,6 +23,18 @@ public class Note implements Serializable {
     @ColumnInfo(name = "date")
     private String date;
 
+    @ColumnInfo(name = "reminder")
+    private boolean isReminderSet;
+
+    @ColumnInfo(name = "reminder_id")
+    private int reminder_id;
+
+    @ColumnInfo(name = "reminder_activated")
+    private boolean reminder_activated;
+
+    @ColumnInfo(name = "rvi_checked")
+    private boolean rvi_checked;
+
     @ColumnInfo(name = "list_item1")
     private String list_item1;
     @ColumnInfo(name = "list_item2")
@@ -143,11 +155,34 @@ public class Note implements Serializable {
     @ColumnInfo(name = "image_path")
     private String image_path;
     @ColumnInfo(name = "photo_path")
-    private String photo_path;
+    private String reminder_time;
 
     @ColumnInfo(name = "audio_length")
     private String audio_length;
 
+    public boolean isRvi_checked() {
+        return rvi_checked;
+    }
+
+    public void setRvi_checked(boolean rvi_checked) {
+        this.rvi_checked = rvi_checked;
+    }
+
+    public int getReminder_id() {
+        return reminder_id;
+    }
+
+    public void setReminder_id(int reminder_id) {
+        this.reminder_id = reminder_id;
+    }
+
+    public boolean isReminderSet() {
+        return isReminderSet;
+    }
+
+    public void setReminderSet(boolean reminderSet) {
+        isReminderSet = reminderSet;
+    }
 
     public String getDate() {
         return date;
@@ -393,8 +428,8 @@ public class Note implements Serializable {
         return is_image;
     }
 
-    public String getPhoto_path() {
-        return photo_path;
+    public String getReminder_time() {
+        return reminder_time;
     }
 
     public boolean isIs_video() {
@@ -405,8 +440,8 @@ public class Note implements Serializable {
         this.is_video = is_video;
     }
 
-    public void setPhoto_path(String photo_path) {
-        this.photo_path = photo_path;
+    public void setReminder_time(String reminder_time) {
+        this.reminder_time = reminder_time;
     }
 
     public void setIs_image(boolean is_image) {
@@ -424,54 +459,71 @@ public class Note implements Serializable {
     public String getList_item1() {
         return list_item1;
     }
+
     public void setList_item1(String list_item1) {
         this.list_item1 = list_item1;
     }
+
     public String getList_item2() {
         return list_item2;
     }
+
     public void setList_item2(String list_item2) {
         this.list_item2 = list_item2;
     }
+
     public String getList_item3() {
         return list_item3;
     }
+
     public void setList_item3(String list_item3) {
         this.list_item3 = list_item3;
     }
+
     public String getList_item4() {
         return list_item4;
     }
+
     public void setList_item4(String list_item4) {
         this.list_item4 = list_item4;
     }
+
     public String getList_item5() {
         return list_item5;
     }
+
     public void setList_item5(String list_item5) {
         this.list_item5 = list_item5;
     }
+
     public String getList_item6() {
         return list_item6;
     }
+
     public void setList_item6(String list_item6) {
         this.list_item6 = list_item6;
     }
+
     public String getList_item7() {
         return list_item7;
     }
+
     public void setList_item7(String list_item7) {
         this.list_item7 = list_item7;
     }
+
     public String getList_item8() {
         return list_item8;
     }
+
     public void setList_item8(String list_item8) {
         this.list_item8 = list_item8;
     }
+
     public String getList_item9() {
         return list_item9;
     }
+
     public void setList_item9(String list_item9) {
         this.list_item9 = list_item9;
     }
@@ -640,5 +692,13 @@ public class Note implements Serializable {
     @Override
     public String toString() {
         return "Note";
+    }
+
+    public boolean isReminder_activated() {
+        return reminder_activated;
+    }
+
+    public void setReminder_activated(boolean reminder_activated) {
+        this.reminder_activated = reminder_activated;
     }
 }

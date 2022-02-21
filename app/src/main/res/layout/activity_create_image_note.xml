@@ -21,6 +21,81 @@
         android:background="@drawable/rectangle_round"
         android:backgroundTint="#303030"
         app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/blur_reminder_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#90000000"
+            android:elevation="3dp"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tp_container_image"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/time_picker_bg"
+            android:elevation="10dp"
+            android:theme="@style/timePicker"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/btncontainer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/date_show_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="25dp"
+                android:textColor="#8000FF00"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TimePicker
+                android:id="@+id/time_picker_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:elevation="10dp"
+                android:timePickerMode="spinner"
+                app:layout_constraintBottom_toTopOf="@id/save_reminder_image"
+                app:layout_constraintTop_toBottomOf="@id/date_show_image" />
+
+            <ImageButton
+                android:id="@+id/save_reminder_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/ic_baseline_done_24"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <ImageButton
+                android:id="@+id/delete_reminder_image"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_delete_icon"
+                android:backgroundTint="@color/orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/cancel_reminder_choose_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_plus_icon"
+                android:rotation="45"
+                android:backgroundTint="@color/orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/imagename_icon"
@@ -181,12 +256,40 @@
                 android:id="@+id/reminderButtonImage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/ic_reminder_icon"
+                android:background="@drawable/ic_reminder"
                 android:backgroundTint="@color/light_blue_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/editButtonImage"
-                app:layout_constraintRight_toLeftOf="@id/copyButtonImage"
+                app:layout_constraintRight_toLeftOf="@id/shareButtonImage"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/reminderButtonImage2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/ic_reminder_1"
+                android:visibility="gone"
+                android:layout_marginBottom="2dp"
+                android:rotation="-45"
+                android:layout_marginStart="-5dp"
+                app:layout_constraintLeft_toRightOf="@id/time_view_note_image"
+                app:layout_constraintTop_toTopOf="@id/time_view_note_image"
+                tools:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/time_view_note_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:textColor="#00FF00"
+                android:singleLine="true"
+                android:textSize="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/editButtonImage"
+                app:layout_constraintRight_toLeftOf="@id/shareButtonImage"
+                android:layout_marginBottom="3dp"/>
 
             <ImageButton
                 android:id="@+id/editButtonImage"
@@ -200,17 +303,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/copyButtonImage"
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_copy_icon"
-                android:backgroundTint="@color/light_blue_dark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/reminderButtonImage"
-                app:layout_constraintRight_toLeftOf="@id/shareButtonImage"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
                 android:id="@+id/shareButtonImage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -218,7 +310,7 @@
                 android:background="@drawable/ic_share_icon"
                 android:backgroundTint="@color/light_blue_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/copyButtonImage"
+                app:layout_constraintLeft_toRightOf="@id/reminderButtonImage"
                 app:layout_constraintRight_toLeftOf="@id/doneButtonImage"
                 app:layout_constraintTop_toTopOf="parent" />
 

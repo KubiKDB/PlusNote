@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">note</string>
     <string name="app_main_name">+note</string>
+    <string name="battery_text">
+        This app will allow you to make notes and set reminders.
+        Creating reminders requires implementing alarms, which may use more battery.
+        Please, allow to ignore battery optimisation for proper functioning of this app.</string>
 </resources>

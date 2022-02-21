@@ -3,6 +3,9 @@ package com.example.plusnote.activities;
 import static com.example.plusnote.activities.VideoXActivity.isVideo;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.MediaRouteButton;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -10,10 +13,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -36,16 +44,20 @@ import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.Note;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class CreateImageNote extends AppCompatActivity {
-    private static final int REQUEST_CODE_SELECT_IMAGE = 1;
-    private static final int REQUEST_CODE_STORAGE_PERMISSION = 2;
     private ImageButton
             cancelButtonImage,
             deleteButtonImage,
             editButtonImage,
             reminderButtonImage,
-            copyButtonImage,
             shareButtonImage,
             doneButtonImage,
             play_button_video,
@@ -67,9 +79,27 @@ public class CreateImageNote extends AppCompatActivity {
     private Handler seekbarHandler;
     SeekBar seekbar_video;
 
+    private ImageButton
+            save_reminder_image,
+            delete_reminder_image;
+    ConstraintLayout
+            cl_image,
+            blur_reminder_image;
+    TextView date_show_image;
+    boolean isReminder = false;
+    boolean isPast = false;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
+    public static boolean isActivated = false;
+    private int alarmID = 0;
+    String reminderTime;
+    private boolean isEdited;
+    private ImageButton cancel_reminder_choose_image;
+    private ImageButton reminder_button_image2;
+    private TextView time_view_note_image;
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "BatteryLife"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +112,6 @@ public class CreateImageNote extends AppCompatActivity {
         deleteButtonImage = findViewById(R.id.deleteButtonImage);
         editButtonImage = findViewById(R.id.editButtonImage);
         reminderButtonImage = findViewById(R.id.reminderButtonImage);
-        copyButtonImage = findViewById(R.id.copyButtonImage);
         shareButtonImage = findViewById(R.id.shareButtonImage);
         doneButtonImage = findViewById(R.id.doneButtonImage);
         image_icon = findViewById(R.id.image_icon);
@@ -91,14 +120,116 @@ public class CreateImageNote extends AppCompatActivity {
         video_length = findViewById(R.id.video_length);
         seekbar_video = findViewById(R.id.seekbar_video);
         play_button_video = findViewById(R.id.play_button_video);
+        cancel_reminder_choose_image = findViewById(R.id.cancel_reminder_choose_image);
+        reminder_button_image2 = findViewById(R.id.reminderButtonImage2);
+        time_view_note_image = findViewById(R.id.time_view_note_image);
         ///////
         inputImageTitle = findViewById(R.id.inputImageTitle);
         //////
+        save_reminder_image = findViewById(R.id.save_reminder_image);
+        delete_reminder_image = findViewById(R.id.delete_reminder_image);
+        cl_image = findViewById(R.id.tp_container_image);
+        date_show_image = findViewById(R.id.date_show_image);
+        blur_reminder_image = findViewById(R.id.blur_reminder_image);
+        save_reminder_image.setEnabled(false);
+        save_reminder_image.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4000FF00")));
+        TimePicker timePicker = findViewById(R.id.time_picker_image);
+        timePicker.setIs24HourView(true);
+        timePicker.setOnTimeChangedListener((timePicker1, i, i1) -> {
+            reminderTime = i + ":" + i1 + ":" + MainActivity.notesDay;
+            save_reminder_image.setEnabled(true);
+            save_reminder_image.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FF00")));
+
+            final DateTimeFormatter hhmm = DateTimeFormatter.ofPattern("HH:mm");
+            final DateTimeFormatter noteDayF = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+
+            LocalDate ld = LocalDate.now();
+            LocalTime ldt = LocalTime.from(LocalTime.now());
+
+            String ld1 = noteDayF.format(ld);
+            ld = LocalDate.from(noteDayF.parse(ld1));
+            String[] split = hhmm.format(ldt).split(":");
+
+            LocalDate test;
+            if (alreadyAvailableNote != null) {
+                test = LocalDate.from(noteDayF.parse(alreadyAvailableNote.getDate()));
+            } else {
+                test = LocalDate.from(noteDayF.parse(MainActivity.notesDay));
+            }
+
+            if (test.isEqual(ld)) {
+                if (Integer.parseInt(split[0]) > i) {
+                    isPast = true;
+                } else isPast = Integer.parseInt(split[0]) == i && Integer.parseInt(split[1]) > i1;
+            } else isPast = test.isBefore(ld);
+        });
+        delete_reminder_image.setOnClickListener(view -> {
+            if (alreadyAvailableNote.isReminderSet()){
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmBroadcast.class);
+                alarmID = alreadyAvailableNote.getReminder_id();
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(),
+                        alarmID,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+                isReminder = false;
+                alreadyAvailableNote.setReminder_id(0);
+                saveNote();
+            }
+        });
+        reminderButtonImage.setOnClickListener(view -> setReminder());
+        save_reminder_image.setOnClickListener(view -> {
+            if (alreadyAvailableNote != null){
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmBroadcast.class);
+                alarmID = alreadyAvailableNote.getReminder_id();
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(),
+                        alarmID,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+
+                alreadyAvailableNote.setReminder_id(0);
+            }
+
+            if (isPast) {
+                Toast.makeText(this, "Set future time", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String[] temp = reminderTime.split(":");
+            setAlarm(
+                    String.valueOf(inputImageTitle.getText()),
+                    temp[2],
+                    temp[0] + ":" + temp[1]
+            );
+
+            isReminder = true;
+
+            cl_image.setVisibility(View.GONE);
+            blur_reminder_image.setVisibility(View.GONE);
+            saveNote();
+        });
+        blur_reminder_image.setOnClickListener(view -> {
+            blur_reminder_image.setVisibility(View.GONE);
+            cl_image.setVisibility(View.GONE);
+        });
+        cancel_reminder_choose_image.setOnClickListener(v -> {
+            blur_reminder_image.setVisibility(View.GONE);
+            cl_image.setVisibility(View.GONE);
+        });
+        time_view_note_image.setOnClickListener(v -> setReminder());
+        //////
         editButtonImage.setEnabled(false);
-        copyButtonImage.setEnabled(false);
         shareButtonImage.setEnabled(false);
         doneButtonImage.setEnabled(false);
         reminderButtonImage.setEnabled(false);
+
+        shareButtonImage.setOnClickListener(view -> share());
 
         inputImageTitle.addTextChangedListener(new TextWatcher() {
 
@@ -231,13 +362,20 @@ public class CreateImageNote extends AppCompatActivity {
             inputImageTitle.post(() -> inputImageTitle.setSelection(inputImageTitle.getText().length()));
             doneButtonImage.setEnabled(true);
             doneButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FF00")));
+            isEdited = true;
         });
         if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
+            setViewOrUpdateNote();
             if (getIntent().getBooleanExtra("deleteNote", false)) {
                 deleteNote();
             }
-            setViewOrUpdateNote();
+            if (getIntent().getBooleanExtra("shareNote", false)) {
+                share();
+            }
+            if (getIntent().getBooleanExtra("setReminder", false)){
+                setReminder();
+            }
         } else {
             if (isVideo) {
                 videoView.setVisibility(View.VISIBLE);
@@ -246,18 +384,18 @@ public class CreateImageNote extends AppCompatActivity {
                 videoView.seekTo(1);
                 video_length.setText(VideoXActivity.timer_string);
             } else {
-            Bitmap temp = BitmapFactory.decodeFile(selectedImagePath);
-            if (temp.getWidth() > temp.getHeight()) {
-                if (temp.getWidth() == 1920) {
-                    temp = RotateBitmap(temp, 270);
-                } else temp = RotateBitmap(temp, 90);
-            }
-            if (CameraXActivity.fromGallery) {
-                temp = RotateBitmap(temp, 0);
-            } else {
-                image_icon.setBackgroundResource(R.drawable.ic_camera);
-            }
-            imageView.setImageBitmap(temp);
+                Bitmap temp = BitmapFactory.decodeFile(selectedImagePath);
+                if (temp.getWidth() > temp.getHeight()) {
+                    if (temp.getWidth() == 1920) {
+                        temp = RotateBitmap(temp, 270);
+                    } else temp = RotateBitmap(temp, 90);
+                }
+                if (CameraXActivity.fromGallery) {
+                    temp = RotateBitmap(temp, 0);
+                } else {
+                    image_icon.setBackgroundResource(R.drawable.ic_camera);
+                }
+                imageView.setImageBitmap(temp);
             }
         }
         if (alreadyAvailableNote != null) {
@@ -265,7 +403,130 @@ public class CreateImageNote extends AppCompatActivity {
         }
     }
 
+    private void setReminder() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(inputImageTitle.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
+
+
+        final DateTimeFormatter ndf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+        LocalDate ld = LocalDate.now();
+        LocalDate ld1;
+        if (alreadyAvailableNote != null) {
+            ld1 = LocalDate.from(ndf.parse(alreadyAvailableNote.getDate()));
+        } else {
+            ld1 = LocalDate.from(ndf.parse(MainActivity.notesDay));
+        }
+        if (ld.isAfter(ld1)) {
+            Toast.makeText(this, "Set future date", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        blur_reminder_image.setVisibility(View.VISIBLE);
+        cl_image.setVisibility(View.VISIBLE);
+        @SuppressLint("SimpleDateFormat") final DateFormat noteDayF = new SimpleDateFormat("yyyy_MM_dd");
+        @SuppressLint("SimpleDateFormat") final DateFormat forDay = new SimpleDateFormat("dd MMM yyyy");
+        Date date = null;
+        if (alreadyAvailableNote == null) {
+            try {
+                date = noteDayF.parse(MainActivity.notesDay);
+            } catch (ParseException ignored) {
+            }
+            String temp = null;
+            if (date != null) {
+                temp = forDay.format(date);
+            }
+            date_show_image.setText(temp);
+        } else {
+            try {
+                date = noteDayF.parse(alreadyAvailableNote.getDate());
+            } catch (ParseException ignored) {
+            }
+            String temp = null;
+            if (date != null) {
+                temp = forDay.format(date);
+            }
+            date_show_image.setText(temp);
+        }
+
+    }
+
+    private void setAlarm(String text, String date, String time) {
+        Intent intent = new Intent(this, AlarmBroadcast.class);
+        intent.putExtra("event", text);
+        intent.putExtra("time", time);
+        intent.putExtra("date", date);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        alarmID = (int) System.currentTimeMillis();
+        pendingIntent = PendingIntent.getBroadcast(
+                this,
+                alarmID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE);
+        String dateandtime = date + " " + time;
+        @SuppressLint("SimpleDateFormat")
+        DateFormat formatter = new SimpleDateFormat("yyyy_MM_dd hh:mm");
+        Date date1 = null;
+        try {
+            date1 = formatter.parse(dateandtime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long temp = date1.getTime();
+        String[] ts = time.split(":");
+        if (ts[0].equals("12")){
+            temp += 43200000;
+        }
+
+        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,temp, pendingIntent);
+    }
+
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
+    private void share() {
+        if (!alreadyAvailableNote.isIs_video()) {
+            MediaScannerConnection.scanFile(this, new String[]{alreadyAvailableNote.getImage_path()},
+                    null, (path, uri) -> {
+                        Intent shareIntent = new Intent(
+                                Intent.ACTION_SEND);
+                        shareIntent.setType("image/*");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        shareIntent
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        startActivity(Intent.createChooser(shareIntent,
+                                "Share Image"));
+                    });
+        } else {
+            MediaScannerConnection.scanFile(this, new String[]{alreadyAvailableNote.getImage_path()},
+                    null, (path, uri) -> {
+                        Intent shareIntent = new Intent(
+                                Intent.ACTION_SEND);
+                        shareIntent.setType("video/*");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        shareIntent
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        startActivity(Intent.createChooser(shareIntent,
+                                "Share Video"));
+                    });
+        }
+    }
+
     private void deleteNote() {
+        if (alreadyAvailableNote.isReminderSet()){
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, AlarmBroadcast.class);
+            alarmID = alreadyAvailableNote.getReminder_id();
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(),
+                    alarmID,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE);
+            alarmManager.cancel(pendingIntent);
+            isReminder = false;
+            alreadyAvailableNote.setReminder_id(0);
+            saveNote();
+        }
         @SuppressWarnings("deprecation")
         @SuppressLint("StaticFieldLeak")
         class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
@@ -292,15 +553,35 @@ public class CreateImageNote extends AppCompatActivity {
     private void setViewOrUpdateNote() {
         inputImageTitle.setEnabled(false);
         editButtonImage.setEnabled(true);
-        copyButtonImage.setEnabled(true);
         shareButtonImage.setEnabled(true);
         doneButtonImage.setEnabled(false);
+
+        if (alreadyAvailableNote.isReminderSet()){
+            delete_reminder_image.setVisibility(View.VISIBLE);
+            cancel_reminder_choose_image.setVisibility(View.GONE);
+        }
+
+        if (alreadyAvailableNote.isReminderSet()){
+            delete_reminder_image.setVisibility(View.VISIBLE);
+            cancel_reminder_choose_image.setVisibility(View.GONE);
+
+            reminder_button_image2.setVisibility(View.VISIBLE);
+            reminderButtonImage.setVisibility(View.INVISIBLE);
+            time_view_note_image.setVisibility(View.VISIBLE);
+            String[] split = alreadyAvailableNote.getReminder_time().split(":");
+            if (split[1].length() == 1) {
+                split[1] = "0" + split[1];
+            }
+            if (split[0].length() == 1) {
+                split[0] = "0" + split[0];
+            }
+            time_view_note_image.setText(split[0] + ":" + split[1]);
+        }
 
         Log.e("DateSavedImage", alreadyAvailableNote.getDate());
 
         deleteButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         editButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
-        copyButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         shareButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#57ACF9")));
         doneButtonImage.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#4000FF00")));
 
@@ -329,8 +610,8 @@ public class CreateImageNote extends AppCompatActivity {
             }
         } catch (Exception e) {
             if (!getIntent().getBooleanExtra("deleteNote", false)) {
-                Toast.makeText(this, "Image has been deleted", Toast.LENGTH_LONG)
-                        /*.setGravity(Gravity.CENTER, 0, 0)*/.show();
+                Toast toast = Toast.makeText(this, "Image has been deleted", Toast.LENGTH_LONG);
+                toast.show();
             }
         }
     }
@@ -341,12 +622,45 @@ public class CreateImageNote extends AppCompatActivity {
         }
         final Note note = new Note();
         note.setTextNoteTitle(inputImageTitle.getText().toString());
+        if (isEdited) {
+            if (alreadyAvailableNote.isReminderSet()) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmBroadcast.class);
+                alarmID = alreadyAvailableNote.getReminder_id();
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(),
+                        alarmID,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+
+                alreadyAvailableNote.setReminder_id(0);
+            }
+            reminderTime = alreadyAvailableNote.getReminder_time();
+
+            String[] temp = reminderTime.split(":");
+            setAlarm(
+                    String.valueOf(inputImageTitle.getText()),
+                    temp[2],
+                    temp[0] + ":" + temp[1]
+            );
+        }
         if (!getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             note.setImage_path(selectedImagePath);
             note.setAudio_length(VideoXActivity.timer_string);
             note.setFrom_gallery(CameraXActivity.fromGallery);
             note.setIs_video(isVideo);
             note.setDate(MainActivity.notesDay);
+            note.setReminderSet(isReminder);
+            if (reminderTime != null) {
+                note.setReminder_time(reminderTime);
+                note.setReminderSet(true);
+                note.setReminder_id(alarmID);
+            } else {
+                note.setReminder_time(alreadyAvailableNote.getReminder_time());
+                note.setReminder_id(alreadyAvailableNote.getReminder_id());
+            }
         } else {
             note.setIs_video(alreadyAvailableNote.isIs_video());
             note.setIs_photo(alreadyAvailableNote.isIs_photo());
@@ -354,6 +668,11 @@ public class CreateImageNote extends AppCompatActivity {
             note.setAudio_length(alreadyAvailableNote.getAudio_length());
             note.setFrom_gallery(alreadyAvailableNote.isFrom_gallery());
             note.setDate(alreadyAvailableNote.getDate());
+            if (isReminder) {
+                note.setReminder_time(reminderTime);
+                note.setReminder_id(alarmID);
+            }
+            note.setReminderSet(isReminder);
         }
         note.setIs_image(true);
         if (alreadyAvailableNote != null) {
@@ -394,13 +713,4 @@ public class CreateImageNote extends AppCompatActivity {
         }
     }
 
-    private void updateRunnable() {
-        updateSeekbar = new Runnable() {
-            @Override
-            public void run() {
-                seekbar_video.setProgress(videoView.getCurrentPosition());
-                seekbarHandler.postDelayed(this, 100);
-            }
-        };
-    }
 }

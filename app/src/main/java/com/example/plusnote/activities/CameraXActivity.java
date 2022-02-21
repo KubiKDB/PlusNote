@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,7 +62,6 @@ public class CameraXActivity extends AppCompatActivity {
     ListenableFuture<ProcessCameraProvider> cpf;
     ProcessCameraProvider pcp;
 
-
     private Executor getExecutor() {
         return ContextCompat.getMainExecutor(this);
     }
@@ -84,7 +85,6 @@ public class CameraXActivity extends AppCompatActivity {
                 pcp.unbindAll();
 
                 Preview preview = new Preview.Builder()
-//                        .setTargetResolution(new Size(1920,1080))
                         .build();
                 preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
 
@@ -97,12 +97,11 @@ public class CameraXActivity extends AppCompatActivity {
                         .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
                         .build();
 
-                Camera camera = pcp.bindToLifecycle(CameraXActivity.this, selector, preview, imageCapture);
+                pcp.bindToLifecycle(CameraXActivity.this, selector, preview, imageCapture);
             } else {
                 pcp.unbindAll();
 
                 Preview preview = new Preview.Builder()
-//                        .setTargetResolution(new Size(1920,1080))
                         .build();
                 preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
 
@@ -115,7 +114,7 @@ public class CameraXActivity extends AppCompatActivity {
                         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                         .build();
 
-                Camera camera = pcp.bindToLifecycle(CameraXActivity.this, selector, preview, imageCapture);
+                pcp.bindToLifecycle(CameraXActivity.this, selector, preview, imageCapture);
             }
             change = !change;
         });

@@ -4,11 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -40,7 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SuppressWarnings("deprecation")
-@SuppressLint("SetTextI18n")
+@SuppressLint({"SetTextI18n", "StaticFieldLeak"})
 public class MainActivity extends AppCompatActivity implements NotesListener {
     private static RecyclerView notesRecyclerView;
     private static List<Note> noteList;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     private static int noteClickedPosition = -1;
     private static final int REQUEST_CODE_ADD_NOTE = 1;
     private static final int REQUEST_CODE_UPDATE_NOTE = 2;
-    private static final int REQUEST_CODE_SHOW_NOTES = 3;
+    public static final int REQUEST_CODE_SHOW_NOTES = 3;
     public static LocalDate stLdate = LocalDate.now();
     public static int pageNumberForDay = 0;
     public int year_count = 2022;
@@ -61,9 +63,12 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             Manifest.permission.RECORD_AUDIO,
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.CAMERA"};
+            "android.permission.CAMERA",
+            "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+    };
     //    public static DayOfWeek dayOfWeek;
     public static String notesDay;
+    private static ViewPager2 pager1;
 
 
     @Override
@@ -75,12 +80,18 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         if (!permissionToRecordAccepted) finish();
     }
 
-    @SuppressLint({"NewApi", "ClickableViewAccessibility"})
+    @SuppressLint({"NewApi", "ClickableViewAccessibility", "BatteryLife"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         setContentView(R.layout.activity_main);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // Check if we need to display our OnboardingSupportFragment
+        if (!sharedPreferences.getBoolean("COMPLETED_ONBOARDING_PREF_NAME", false)) {
+            // The user hasn't seen the OnboardingSupportFragment yet, so show it
+            startActivity(new Intent(this, BatteryRequestActivity.class));
+        }
         /////////
         ImageButton plus = findViewById(R.id.plus);
         ImageButton addText = findViewById(R.id.text_create);
@@ -96,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
         ConstraintLayout month_choose = findViewById(R.id.month_choose);
         ConstraintLayout year_choose_layout = findViewById(R.id.year_choose_layout);
+        ConstraintLayout week1 = findViewById(R.id.weekDaysCount);
+        ConstraintLayout week2 = findViewById(R.id.weekDaysCount1);
 //        ConstraintLayout noAds = findViewById(R.id.noAdsContainer);
         //////////
         EditText searchTxt = findViewById(R.id.searchEditText);
@@ -137,9 +150,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         blur1.setElevation(6);
         month_choose.setElevation(7);
         /////////
-        ViewPager2 pager1 = findViewById(R.id.vp2);
+        pager1 = findViewById(R.id.vp2);
         FragmentStateAdapter pageAdapter1 = new MyAdapter2(this);
         pager1.setAdapter(pageAdapter1);
+//        ViewPager2 weekPager = findViewById(R.id.week_pager);
+//        FragmentStateAdapter weekAdapter = new WeekAdapter(this);
+//        weekPager.setAdapter(weekAdapter);
+//        weekPager.setCurrentItem(1, false);
         /////////
         LocalDate ld1 = LocalDate.now();
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd yyyy EEEE", Locale.ENGLISH);
@@ -156,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         fri.setTextColor(Color.parseColor("#9000FF00"));
         sat.setTextColor(Color.parseColor("#9000FF00"));
         sun.setTextColor(Color.parseColor("#9000FF00"));
-
 
         year_count = Integer.parseInt(String.valueOf(year_view.getText()));
         calcPN();
@@ -517,7 +533,47 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
     }
 
-    private static void getNotes(final int requestCode, final boolean isNoteDeleted, Context context) {
+    @Override
+    public void onNoteClicked(Note note, int position, boolean deleteNote, boolean shareNote) {
+        noteClickedPosition = position;
+        Intent intent;
+        if (note.isIs_list()) {
+            intent = new Intent(getApplicationContext(), CreateListNote.class);
+        } else if (note.isIs_image()) {
+            intent = new Intent(getApplicationContext(), CreateImageNote.class);
+        } else if (note.isIs_voice()) {
+            intent = new Intent(getApplicationContext(), CreateVoiceNote.class);
+        } else {
+            intent = new Intent(getApplicationContext(), CreateTextNote.class);
+        }
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("note", note);
+        if (shareNote) {
+            intent.putExtra("shareNote", true);
+        }
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+    }
+
+    @Override
+    public void onNoteClicked(Note note, int position, boolean deleteNote, boolean shareNote, boolean setReminder) {
+        noteClickedPosition = position;
+        Intent intent;
+        if (note.isIs_list()) {
+            intent = new Intent(getApplicationContext(), CreateListNote.class);
+        } else if (note.isIs_image()) {
+            intent = new Intent(getApplicationContext(), CreateImageNote.class);
+        } else if (note.isIs_voice()) {
+            intent = new Intent(getApplicationContext(), CreateVoiceNote.class);
+        } else {
+            intent = new Intent(getApplicationContext(), CreateTextNote.class);
+        }
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("note", note);
+        intent.putExtra("setReminder", true);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+    }
+
+    public static void getNotes(final int requestCode, final boolean isNoteDeleted, Context context) {
 
         @SuppressLint("StaticFieldLeak")
         class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
@@ -536,7 +592,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                 super.onPostExecute(notes);
                 if (requestCode == REQUEST_CODE_SHOW_NOTES) {
                     noteList.clear();
-                    notesAdapter.notifyDataSetChanged();
                     for (int i = 0; i < notes.size(); i++) {
                         if (notes.get(i).getDate().equals(notesDay)) {
                             noteList.add(notes.get(i));
@@ -548,10 +603,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                     notesAdapter.notifyItemInserted(0);
                     notesRecyclerView.smoothScrollToPosition(0);
                 } else if (requestCode == REQUEST_CODE_UPDATE_NOTE) {
-//                    noteList.remove(noteClickedPosition);
-//                    if (isNoteDeleted) {
-//                        notesAdapter.notifyItemRemoved(noteClickedPosition);
-//                    } else {
                     noteList.clear();
                     notesAdapter.notifyDataSetChanged();
                     for (int i = 0; i < notes.size(); i++) {
@@ -560,13 +611,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                         }
                     }
                     notesAdapter.notifyDataSetChanged();
-//                        if (notes.get(noteClickedPosition).getDate().equals(notesDay)){
-//                            noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
-//                            notesAdapter.notifyItemChanged(noteClickedPosition);
-//                        } else {
-//                            notesAdapter.notifyItemRemoved(noteClickedPosition);
-//                        }
-//                    }
                 }
             }
         }
@@ -592,30 +636,17 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         getNotes(REQUEST_CODE_SHOW_NOTES, false, context);
     }
 
-//    public static void getTodayNotes(Context context){
-//        @SuppressLint("StaticFieldLeak")
-//        class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
-//
-//            @Override
-//            protected List<Note> doInBackground(Void... voids) {
-//                return NotesDatabase
-//                        .getDatabase(context)
-//                        .noteDao()
-//                        .getAllNotes();
-//            }
-//
-//            @SuppressLint("NotifyDataSetChanged")
-//            @Override
-//            protected void onPostExecute(List<Note> notes) {
-//                super.onPostExecute(notes);
-//                for (int i = 0; i < notes.size(); i++) {
-//                    if (notes.get(i).getDate().equals(notesDay)){
-//                        noteList.add(notes.get(i));
-//                    }
-//                }
-//            }
-//        }
-//        new GetNotesTask().execute();
-//    }
+    public static void onItemScroll(int pageNumber){
+        switch (pageNumber){
+            case 0:
+            {
+
+            }
+            case 1:
+            {
+
+            }
+        }
+    }
 
 }
