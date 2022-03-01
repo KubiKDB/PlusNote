@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.OnSwipe;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +32,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.plusnote.R;
 import com.example.plusnote.adapters.MyAdapter2;
+import com.example.plusnote.adapters.MyAdapter2Alt;
 import com.example.plusnote.adapters.NotesAdapter;
+import com.example.plusnote.adapters.SearchAdapter;
+import com.example.plusnote.adapters.WeekAdapter;
 import com.example.plusnote.database.NotesDatabase;
 import com.example.plusnote.entities.Note;
 import com.example.plusnote.listeners.NotesListener;
@@ -48,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     private static List<Note> noteList;
     private static NotesAdapter notesAdapter;
     public static int pnc;
+    private RecyclerView searchRV;
+    private SearchAdapter searchAdapter;
+    private static List<Note> allNotesList;
+
+    static TextView month_view;
+    static TextView year_view;
 
     private static int noteClickedPosition = -1;
     private static final int REQUEST_CODE_ADD_NOTE = 1;
@@ -55,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
     public static LocalDate stLdate = LocalDate.now();
     public static int pageNumberForDay = 0;
+    public static int pageNumberForDay1 = 0;
     public int year_count = 2022;
     public int savedYearNum = 0;
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -93,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             startActivity(new Intent(this, BatteryRequestActivity.class));
         }
         /////////
+        searchRV = findViewById(R.id.searchRecyclerView);
         ImageButton plus = findViewById(R.id.plus);
         ImageButton addText = findViewById(R.id.text_create);
         ImageButton cameraCreate = findViewById(R.id.camera_create);
@@ -107,15 +121,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayout);
         ConstraintLayout month_choose = findViewById(R.id.month_choose);
         ConstraintLayout year_choose_layout = findViewById(R.id.year_choose_layout);
-        ConstraintLayout week1 = findViewById(R.id.weekDaysCount);
-        ConstraintLayout week2 = findViewById(R.id.weekDaysCount1);
 //        ConstraintLayout noAds = findViewById(R.id.noAdsContainer);
         //////////
         EditText searchTxt = findViewById(R.id.searchEditText);
         //////////
         TextView app_name = findViewById(R.id.app_name);
-        TextView month_view = findViewById(R.id.month_view);
-        TextView year_view = findViewById(R.id.year_view);
+        month_view = findViewById(R.id.month_view);
+        year_view = findViewById(R.id.year_view);
         TextView year1 = findViewById(R.id.year1);
         ////////
         TextView[] months = new TextView[12];
@@ -137,13 +149,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         years[2] = findViewById(R.id.year_choose2);
         years[3] = findViewById(R.id.year_choose3);
         years[4] = findViewById(R.id.year_choose4);
-        TextView mon = findViewById(R.id.weekDay);
-        TextView tue = findViewById(R.id.weekDay1);
-        TextView wed = findViewById(R.id.weekDay2);
-        TextView thu = findViewById(R.id.weekDay3);
-        TextView fri = findViewById(R.id.weekDay4);
-        TextView sat = findViewById(R.id.weekDay5);
-        TextView sun = findViewById(R.id.weekDay6);
+//        TextView mon = findViewById(R.id.weekDay);
+//        TextView tue = findViewById(R.id.weekDay1);
+//        TextView wed = findViewById(R.id.weekDay2);
+//        TextView thu = findViewById(R.id.weekDay3);
+//        TextView fri = findViewById(R.id.weekDay4);
+//        TextView sat = findViewById(R.id.weekDay5);
+//        TextView sun = findViewById(R.id.weekDay6);
         ////////
         blur.setElevation(3);
         constraintLayout.setElevation(4);
@@ -151,12 +163,43 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         month_choose.setElevation(7);
         /////////
         pager1 = findViewById(R.id.vp2);
-        FragmentStateAdapter pageAdapter1 = new MyAdapter2(this);
+        MyAdapter2 pageAdapter1 = new MyAdapter2(this);
         pager1.setAdapter(pageAdapter1);
-//        ViewPager2 weekPager = findViewById(R.id.week_pager);
-//        FragmentStateAdapter weekAdapter = new WeekAdapter(this);
-//        weekPager.setAdapter(weekAdapter);
-//        weekPager.setCurrentItem(1, false);
+        ViewPager2 pager2 = findViewById(R.id.vp2_alt);
+        MyAdapter2Alt pageAdapter2 = new MyAdapter2Alt(this);
+        pager2.setAdapter(pageAdapter2);
+        ViewPager2 weekPager = findViewById(R.id.week_pager);
+        FragmentStateAdapter weekAdapter = new WeekAdapter(this);
+        weekPager.setAdapter(weekAdapter);
+        weekPager.setCurrentItem(1, false);
+        pager2.setVisibility(View.VISIBLE);
+        pager1.setVisibility(View.INVISIBLE);
+        weekPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == 0) {
+                    pager1.setVisibility(View.VISIBLE);
+                    pager2.setVisibility(View.GONE);
+                    SharedPreferences.Editor sharedPreferencesEditor =
+                            PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+                    sharedPreferencesEditor.putBoolean(
+                            "SUN", true);
+                    sharedPreferencesEditor.apply();
+                } else {
+                    pager2.setVisibility(View.VISIBLE);
+                    pager1.setVisibility(View.INVISIBLE);
+                    SharedPreferences.Editor sharedPreferencesEditor =
+                            PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+                    sharedPreferencesEditor.putBoolean(
+                            "SUN", false);
+                    sharedPreferencesEditor.apply();
+                }
+            }
+        });
+        if (sharedPreferences.getBoolean("SUN", false)) {
+            weekPager.setCurrentItem(0, false);
+        }
         /////////
         LocalDate ld1 = LocalDate.now();
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd yyyy EEEE", Locale.ENGLISH);
@@ -166,18 +209,17 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         month_view.setText(dtf.format(ld1));
         year_view.setText(dtf1.format(ld1));
 
-        mon.setTextColor(Color.parseColor("#9000FF00"));
-        tue.setTextColor(Color.parseColor("#9000FF00"));
-        wed.setTextColor(Color.parseColor("#9000FF00"));
-        thu.setTextColor(Color.parseColor("#9000FF00"));
-        fri.setTextColor(Color.parseColor("#9000FF00"));
-        sat.setTextColor(Color.parseColor("#9000FF00"));
-        sun.setTextColor(Color.parseColor("#9000FF00"));
+//        mon.setTextColor(Color.parseColor("#9000FF00"));
+//        tue.setTextColor(Color.parseColor("#9000FF00"));
+//        wed.setTextColor(Color.parseColor("#9000FF00"));
+//        thu.setTextColor(Color.parseColor("#9000FF00"));
+//        fri.setTextColor(Color.parseColor("#9000FF00"));
+//        sat.setTextColor(Color.parseColor("#9000FF00"));
+//        sun.setTextColor(Color.parseColor("#9000FF00"));
 
         year_count = Integer.parseInt(String.valueOf(year_view.getText()));
         calcPN();
         stLdate = LocalDate.now();
-
         LocalDate ld = LocalDate.of(2022, Month.JANUARY, 1);
         year1.setText(year_view.getText());
         String days = dtf.format(ld);
@@ -186,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             ld = ld.plusMonths(1);
             days = dtf.format(ld);
         }
-
         year_view.setOnClickListener(view -> {
             year_choose_layout.setVisibility(View.VISIBLE);
             blur1.setVisibility(View.VISIBLE);
@@ -218,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         for (int i = 0; i < months.length; i++) {
             int finalI = i;
             months[i].setOnClickListener(view -> {
-
 //                    mon.setTextColor(Color.parseColor("#9000FF00"));
 //                    tue.setTextColor(Color.parseColor("#9000FF00"));
 //                    wed.setTextColor(Color.parseColor("#9000FF00"));
@@ -226,15 +266,15 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //                    fri.setTextColor(Color.parseColor("#9000FF00"));
 //                    sat.setTextColor(Color.parseColor("#9000FF00"));
 //                    sun.setTextColor(Color.parseColor("#9000FF00"));
-
                 month_view.setText(months[finalI].getText());
                 pager1.setAdapter(pageAdapter1);
                 LocalDate localDate = LocalDate.of(year_count, finalI + 1, 1);
-                int pagenum;
+                int pagenum, pagenum1;
                 savedYearNum = Integer.parseInt(String.valueOf(year_view.getText()));
                 year_count = Integer.parseInt(String.valueOf(year_view.getText()));
                 if (year_count > 2024) {
                     pagenum = (localDate.getDayOfYear() + 4 + 366 + 365 * (year_count - 2023)) / 7;
+                    pagenum1 = (localDate.getDayOfYear() + 5 + 366 + 365 * (year_count - 2023)) / 7;
 //                    DayOfWeek dayOfWeek = localDate.getDayOfWeek();
 //                    switch (dayOfWeek) {
 //                        case MONDAY:
@@ -261,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //                    }
                 } else {
                     pagenum = (localDate.getDayOfYear() + 4 + 365 * (year_count - 2022)) / 7;
+                    pagenum1 = (localDate.getDayOfYear() + 5 + 365 * (year_count - 2022)) / 7;
 //                    DayOfWeek dayOfWeek = localDate.getDayOfWeek();
 //                    switch (dayOfWeek) {
 //                        case MONDAY:
@@ -287,11 +328,17 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //                    }
                 }
                 pageNumberForDay = pagenum;
-                stLdate = LocalDate.of(2022, finalI + 1, 1);
-                pager1.setCurrentItem(pagenum);
+                stLdate = LocalDate.of(Integer.parseInt(year_view.getText().toString()), finalI + 1, 1);
+                pager1.setCurrentItem(pagenum, false);
+
+                pager2.setAdapter(pageAdapter2);
+                pageNumberForDay1 = pagenum1;
+                String temp1 = String.valueOf(pagenum1);
+                pager2.setCurrentItem(Integer.parseInt(temp1), false);
+
                 month_choose.setVisibility(View.GONE);
                 blur1.setVisibility(View.GONE);
-                LocalDate time = LocalDate.of(2022, finalI + 1, 1);
+                LocalDate time = LocalDate.of(Integer.parseInt(year_view.getText().toString()), finalI + 1, 1);
                 notesDay = noteDayF.format(time);
                 getNotes(REQUEST_CODE_SHOW_NOTES, false, getApplicationContext());
             });
@@ -344,12 +391,12 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             blur.setVisibility(View.GONE);
 //            noAds.setVisibility(View.GONE);
         });
-
         blur1.setOnClickListener(view -> {
             month_choose.setVisibility(View.GONE);
             year_choose_layout.setVisibility(View.GONE);
             year_view.setText(savedYearNum + "");
             blur1.setVisibility(View.GONE);
+            searchRV.setVisibility(View.GONE);
         });
         blur.setOnClickListener(view -> {
             plus.setRotation(0);
@@ -363,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             month_view.setVisibility(View.VISIBLE);
             search_do.setVisibility(View.GONE);
             searchTxt.setVisibility(View.GONE);
+            searchRV.setVisibility(View.GONE);
         });
         plus.setOnClickListener(view -> {
             if (searchTxt.getVisibility() == View.VISIBLE) {
@@ -377,6 +425,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(searchTxt.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 searchTxt.setText("");
+                searchRV.setVisibility(View.GONE);
             } else if (createNote.getVisibility() == View.VISIBLE) {
                 createNote.setVisibility(View.GONE);
 //                noAds.setVisibility(View.GONE);
@@ -384,6 +433,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                 app_name.setVisibility(View.VISIBLE);
                 plus.setRotation(0);
                 plus.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                searchRV.setVisibility(View.GONE);
             } else if (createNote.getVisibility() == View.GONE) {
 //                noAds.setVisibility(View.VISIBLE);
                 blur.setVisibility(View.VISIBLE);
@@ -407,9 +457,31 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             plus.setRotation(45);
             plus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFA500")));
             search_do.setVisibility(View.VISIBLE);
+            searchTxt.setText("");
+            searchRV.setVisibility(View.VISIBLE);
+            if (searchAdapter != null){
+                searchAdapter = null;
+                searchRV.setAdapter(null);
+            }
         });
-        search_do.setOnClickListener(view -> {
-            //TODO SEARCH BUTTON
+        searchTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (searchTxt.getText().toString().trim().length() >= 2){
+                    search(searchTxt.getText().toString());
+                    searchRV.setVisibility(View.VISIBLE);
+                } else {
+                    searchRV.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         notesRecyclerView = findViewById(R.id.notesRecyclerView);
@@ -432,10 +504,11 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //        TextView fri = findViewById(R.id.weekDay4);
 //        TextView sat = findViewById(R.id.weekDay5);
 //        TextView sun = findViewById(R.id.weekDay6);
-        int pagenum;
+        int pagenum, pagenum1;
 
         if (year_count > 2024) {
             pagenum = (ld1.getDayOfYear() + 4 + 366 + 365 * (year_count - 2023)) / 7;
+            pagenum1 = (ld1.getDayOfYear() + 5 + 366 + 365 * (year_count - 2023)) / 7;
 //            DayOfWeek dayOfWeek = ld1.getDayOfWeek();
 //            switch (dayOfWeek) {
 //                case MONDAY:
@@ -462,6 +535,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
 //            }
         } else {
             pagenum = (ld1.getDayOfYear() + 4 + 365 * (year_count - 2022)) / 7;
+            pagenum1 = (ld1.getDayOfYear() + 5 + 365 * (year_count - 2022)) / 7;
 //            DayOfWeek dayOfWeek = ld1.getDayOfWeek();
 //            switch (dayOfWeek) {
 //                case MONDAY:
@@ -494,6 +568,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         pageNumberForDay = pagenum;
         String temp = String.valueOf(pagenum);
         pager1.setCurrentItem(Integer.parseInt(temp), false);
+
+        ViewPager2 pager2 = findViewById(R.id.vp2_alt);
+        MyAdapter2Alt pageAdapter2 = new MyAdapter2Alt(this);
+        pager2.setAdapter(pageAdapter2);
+        pageNumberForDay1 = pagenum1;
+        String temp1 = String.valueOf(pagenum1);
+        pager2.setCurrentItem(Integer.parseInt(temp1), false);
     }
 
     @Override
@@ -590,6 +671,9 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             @Override
             protected void onPostExecute(List<Note> notes) {
                 super.onPostExecute(notes);
+                allNotesList = new ArrayList<>();
+                allNotesList.addAll(notes);
+
                 if (requestCode == REQUEST_CODE_SHOW_NOTES) {
                     noteList.clear();
                     for (int i = 0; i < notes.size(); i++) {
@@ -634,19 +718,26 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     public static void ClickOnDay(TextView textView, String day, Context context) {
         notesDay = day;
         getNotes(REQUEST_CODE_SHOW_NOTES, false, context);
+        final DateTimeFormatter noteDay = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+        LocalDate localDate = LocalDate.from(noteDay.parse(day));
+        final DateTimeFormatter noteMonth = DateTimeFormatter.ofPattern("MMM");
+        final DateTimeFormatter noteYear = DateTimeFormatter.ofPattern("yyyy");
+        month_view.setText(noteMonth.format(localDate));
+        year_view.setText(noteYear.format(localDate));
     }
 
-    public static void onItemScroll(int pageNumber){
-        switch (pageNumber){
-            case 0:
-            {
+    private void search(String searchString) {
+        List<Note> searchList = new ArrayList<>();
 
-            }
-            case 1:
-            {
-
+        for (int i = 0; i < allNotesList.size(); i++) {
+            if (allNotesList.get(i).getTextNoteTitle().toLowerCase().contains(searchString.toLowerCase())){
+                searchList.add(allNotesList.get(i));
             }
         }
+        searchRV.setLayoutManager(
+                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        );
+        searchAdapter = new SearchAdapter(searchList, this, getApplicationContext());
+        searchRV.setAdapter(searchAdapter);
     }
-
 }

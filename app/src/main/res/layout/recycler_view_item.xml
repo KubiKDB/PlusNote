@@ -18,76 +18,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/text_container_icon"
+            android:id="@+id/search_note_icon"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:background="@drawable/ic_textnote"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <ImageButton
-            android:id="@+id/play_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_baseline_play_arrow_24"
-            android:backgroundTint="#8000FF00"
-            android:visibility="gone"
-            app:layout_constraintLeft_toRightOf="@id/text_container_icon"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Chronometer
-            android:id="@+id/playback_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="5dp"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColor="@color/light_blue_text"
-            android:textSize="12dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/play_button" />
-
-        <TextView
-            android:id="@+id/audio_length"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginEnd="5dp"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="00:00"
-            android:textColor="@color/light_blue_text"
-            android:textSize="12dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <SeekBar
-            android:id="@+id/seekbar_audio"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:elevation="6dp"
-            android:progressBackgroundTint="@color/light_blue_text"
-            android:progressTint="@color/light_blue"
-            android:thumbTint="@color/light_blue"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/playback_timer"
-            app:layout_constraintRight_toLeftOf="@id/audio_length" />
-
         <TextView
             android:id="@+id/TitleOut"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="5dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="2dp"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
             android:paddingBottom="2dp"
             android:textColor="@color/light_blue_text"
             android:singleLine="true"
             android:textSize="21dp"
-            app:layout_constraintBottom_toTopOf="@id/playback_timer"
-            app:layout_constraintLeft_toRightOf="@id/play_button"
-            app:layout_constraintRight_toLeftOf="@id/reminder_icon_mini"
+            app:layout_constraintLeft_toRightOf="@id/search_note_icon"
+            app:layout_constraintRight_toLeftOf="@id/rvi_checkbox"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView

@@ -40,13 +40,11 @@ public class WeekPager extends Fragment {
                              Bundle savedInstanceState) {
         View result = null;
         if (pageNumber == 0) {
-            result = inflater.inflate(R.layout.week_fragment2, container, false);
-            MainActivity.onItemScroll(pageNumber);
+            result = inflater.inflate(R.layout.week_fragment1, container, false);
             weekType = false;
         }
         if (pageNumber == 1) {
-            result = inflater.inflate(R.layout.week_fragment1, container, false);
-            MainActivity.onItemScroll(pageNumber);
+            result = inflater.inflate(R.layout.week_fragment2, container, false);
             weekType = true;
         }
         return result;

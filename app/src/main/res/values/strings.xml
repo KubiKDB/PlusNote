@@ -2,7 +2,13 @@
     <string name="app_name">note</string>
     <string name="app_main_name">+note</string>
     <string name="battery_text">
-        This app will allow you to make notes and set reminders.
-        Creating reminders requires implementing alarms, which may use more battery.
-        Please, allow to ignore battery optimisation for proper functioning of this app.</string>
+        Fast\&amp;easy notepad that allows you to make and organize your everyday notes,
+        including setting reminders and getting notifications.
+        \n In order to use all app\'s features you should grant some permissions:
+        \n 1. To ignore battery optimization.
+        \n 2. To use camera.
+        \n 3. To use microphone.
+        \n 4. To use internal storage.
+        \n Although you have a choice not to give those permissions,
+        you are strongly advised to grant them for proper functioning of this app.</string>
 </resources>

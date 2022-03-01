@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.plusnote.R;
 
@@ -25,13 +26,24 @@ import java.util.List;
 
 public class BatteryRequestActivity extends AppCompatActivity {
 
-    @SuppressLint("BatteryLife")
+    @SuppressLint({"BatteryLife", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.battery_optimization_layout);
         Button allow = findViewById(R.id.allow);
-        Button not_allow = findViewById(R.id.not_allow);
+//        Button not_allow = findViewById(R.id.not_allow);
+        TextView textView = findViewById(R.id.greetings_text);
+        textView.setText(
+                "fast&easy notepad that allows you to make and organize your everyday notes, " +
+                        "including setting reminders and getting notifications." +
+                "        \nIn order to use all app's features you should grant some permissions: " +
+                "        \n1. To ignore battery optimization." +
+                "        \n2. To use camera." +
+                "        \n3. To use microphone." +
+                "        \n4. To use internal storage." +
+                "        \nAlthough you have a choice not to give those permissions, " +
+                        "you are strongly advised to grant them for proper functioning of this app.");
 
         allow.setOnClickListener(v -> {
             Intent ignoreBatteryOptimizationIntent = new Intent();
@@ -52,14 +64,14 @@ public class BatteryRequestActivity extends AppCompatActivity {
                     "COMPLETED_ONBOARDING_PREF_NAME", true);
             sharedPreferencesEditor.apply();
         });
-        not_allow.setOnClickListener(v -> {
-            SharedPreferences.Editor sharedPreferencesEditor =
-                    PreferenceManager.getDefaultSharedPreferences(this).edit();
-            sharedPreferencesEditor.putBoolean(
-                    "COMPLETED_ONBOARDING_PREF_NAME", true);
-            sharedPreferencesEditor.apply();
-            finish();
-        });
+//        not_allow.setOnClickListener(v -> {
+//            SharedPreferences.Editor sharedPreferencesEditor =
+//                    PreferenceManager.getDefaultSharedPreferences(this).edit();
+//            sharedPreferencesEditor.putBoolean(
+//                    "COMPLETED_ONBOARDING_PREF_NAME", true);
+//            sharedPreferencesEditor.apply();
+//            finish();
+//        });
     }
 
     private void addAutoStartup() {

@@ -7,7 +7,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -36,6 +35,8 @@ import com.example.plusnote.listeners.NotesListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -204,27 +205,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
         holder.note_icon_text.setOnClickListener(view -> holder.btnContainer.setVisibility(View.VISIBLE));
         holder.shareButton.setOnClickListener(view -> notesListener.onNoteClicked(notes.get(position), position, false, true));
-//        if (notes.get(position).isIs_list()) {
-//            holder.note_icon_text.setBackgroundResource(R.drawable.ic_listnote);
-//            holder.viewButton.setBackgroundResource(R.drawable.ic_listnote);
-//        } else if (notes.get(position).isIs_image()) {
-//            if (notes.get(position).isIs_video()) {
-//                holder.note_icon_text.setBackgroundResource(R.drawable.ic_video);
-//                holder.viewButton.setBackgroundResource(R.drawable.ic_video);
-//            } else if (notes.get(position).isFrom_gallery()) {
-//                holder.note_icon_text.setBackgroundResource(R.drawable.ic_image);
-//                holder.viewButton.setBackgroundResource(R.drawable.ic_image);
-//            } else {
-//                holder.note_icon_text.setBackgroundResource(R.drawable.ic_camera);
-//                holder.viewButton.setBackgroundResource(R.drawable.ic_camera);
-//            }
-//        } else if (notes.get(position).isIs_voice()) {
-//            holder.note_icon_text.setBackgroundResource(R.drawable.ic_microphone);
-//            holder.viewButton.setBackgroundResource(R.drawable.ic_microphone);
-//        } else {
-//            holder.note_icon_text.setBackgroundResource(R.drawable.ic_textnote);
-//            holder.viewButton.setBackgroundResource(R.drawable.ic_textnote);
-//        }
         holder.viewButton.setOnClickListener(view -> {
             notesListener.onNoteClicked(notes.get(position), position);
             holder.btnContainer.setVisibility(View.GONE);
@@ -274,7 +254,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             super(itemView);
             titleOut = itemView.findViewById(R.id.TitleOut);
             time_view_note = itemView.findViewById(R.id.time_view_note);
-            note_icon_text = itemView.findViewById(R.id.text_container_icon);
+            note_icon_text = itemView.findViewById(R.id.search_note_icon);
             outContainer = itemView.findViewById(R.id.textOutContainer);
             btnContainer = itemView.findViewById(R.id.btncontainer);
             cancelButton = itemView.findViewById(R.id.cancelButtonSwipe);
@@ -314,7 +294,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             @Override
             protected void onPostExecute(Void unused) {
                 super.onPostExecute(unused);
-//                MainActivity.getNotes(REQUEST_CODE_SHOW_NOTES, false, context);
             }
         }
         new SaveNoteTask().execute();
@@ -322,9 +301,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
     public void sendToTomorrow(Note alreadyAvailableNote, Context context) {
         final Note note = alreadyAvailableNote;
-        String[] datestr = alreadyAvailableNote.getDate().split("_");
-        int i = Integer.parseInt(datestr[2]) + 1;
-        String date = datestr[0] + "_" + datestr[1] + "_" + i;
+        final DateTimeFormatter noteDayF = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+        LocalDate localDate = LocalDate.from(noteDayF.parse(note.getDate()));
+        localDate = localDate.plusDays(1);
+        String date = noteDayF.format(localDate);
         note.setDate(date);
         if (alreadyAvailableNote.isReminderSet()) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -346,7 +326,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                     alreadyAvailableNote.getTextNoteTitle(),
                     date,
                     temp[0] + ":" + temp[1],
-                    context
+                    context,
+                    note
             );
         }
         @SuppressLint("StaticFieldLeak")
@@ -368,13 +349,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         new SaveNoteTask().execute();
     }
 
-    private void setAlarm(String text, String date, String time, Context context) {
+    private void setAlarm(String text, String date, String time, Context context, Note note) {
         Intent intent = new Intent(context, AlarmBroadcast.class);
         intent.putExtra("event", text);
         intent.putExtra("time", time);
         intent.putExtra("date", date);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        int alarmID = (int) System.currentTimeMillis();
+        int alarmID = note.getReminder_id();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
                 alarmID,
@@ -391,7 +372,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         }
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        long temp = date1.getTime();
+        long temp = 0;
+        if (date1 != null) {
+            temp = date1.getTime();
+        }
         String[] ts = time.split(":");
         if (ts[0].equals("12")){
             temp += 43200000;

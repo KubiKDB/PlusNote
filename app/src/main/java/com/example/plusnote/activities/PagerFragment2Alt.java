@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.plusnote.R;
@@ -19,7 +18,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class PagerFragment2 extends Fragment {
+public class PagerFragment2Alt extends Fragment {
     public LocalDate ld = LocalDate.of(2022, Month.JANUARY, 1);
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM yyyy EEEE", Locale.ENGLISH);
     final DateTimeFormatter noteDayF = DateTimeFormatter.ofPattern("yyyy_MM_dd");
@@ -29,8 +28,8 @@ public class PagerFragment2 extends Fragment {
 
     private static int pageNumber;
 
-    public static PagerFragment2 newInstance(int page) {
-        PagerFragment2 fragment2 = new PagerFragment2();
+    public static PagerFragment2Alt newInstance(int page) {
+        PagerFragment2Alt fragment2 = new PagerFragment2Alt();
         Bundle args = new Bundle();
         args.putInt("num", page);
         fragment2.setArguments(args);
@@ -49,7 +48,7 @@ public class PagerFragment2 extends Fragment {
         }
     }
 
-    public PagerFragment2() {
+    public PagerFragment2Alt() {
 
     }
 
@@ -58,6 +57,7 @@ public class PagerFragment2 extends Fragment {
         super.onCreate(savedInstanceState);
         pageNumber = getArguments() != null ? getArguments().getInt("num") : 1;
     }
+
 
 
     @SuppressLint("SetTextI18n")
@@ -83,19 +83,23 @@ public class PagerFragment2 extends Fragment {
         dvs[4] = result.findViewById(R.id.Day4);
         dvs[5] = result.findViewById(R.id.Day5);
         dvs[6] = result.findViewById(R.id.Day6);
-        if (MainActivity.pnc != pageNumber) {
-            for (int i = 0; i < dvs.length; i++) {
-                dvs[i].setTextColor(Color.parseColor("#9000FF00"));
-            }
-        }
+//        if (MainActivity.pnc != pageNumber) {
+//            for (int i = 0; i < dvs.length; i++) {
+//                dvs[i].setTextColor(Color.parseColor("#9000FF00"));
+//            }
+//        }
         int i = 1;
         if (pageNumber % 2 == 1) {
-            i = 2 + (pageNumber - 1) * 7;
+//            if (!WeekPager.weekType){
+//                i = 1 + (pageNumber - 1) * 7;
+//            } else {
+            i = 1 + (pageNumber - 1) * 7;
+//            }
             ld = ld.plusDays(i);
             days = dtf.format(ld);
             for (int s = 0; s < 7; s++) {
-                dates[weekDayToNum(ld.getDayOfWeek())] = noteDayF.format(ld);
-                dvs[weekDayToNum(ld.getDayOfWeek())].setText(days);
+                dates[s] = noteDayF.format(ld);
+                dvs[s].setText(days);
                 int finalS = s;
                 dvs[s].setOnClickListener(view -> {
                     for (TextView dv : dvs) {
@@ -103,9 +107,9 @@ public class PagerFragment2 extends Fragment {
 //                        week_ds[z].setTextColor(Color.parseColor("#9000FF00"));
                     }
                     MainActivity.pnc = pageNumber;
-                    MainActivity.pageNumberForDay = -1;
+                    MainActivity.pageNumberForDay1 = -1;
                     dvs[finalS].setTextColor(Color.parseColor("#FFA500"));
-//                    week_ds[finalS].setTextColor(Color.parseColor("#FFA500"));
+                    //                    week_ds[finalS].setTextColor(Color.parseColor("#FFA500"));
                     MainActivity.ClickOnDay(dvs[finalS], dates[finalS], getContext());
                 });
                 ld = ld.plusDays(1);
@@ -116,13 +120,13 @@ public class PagerFragment2 extends Fragment {
 //            if (!WeekPager.weekType){
 //                i = 1 + (pageNumber - 1) * 7;
 //            } else {
-            i = 2 + (pageNumber - 1) * 7;
+            i = 1 + (pageNumber - 1) * 7;
 //            }
             ld = ld.plusDays(i);
             days = dtf.format(ld);
             for (int s = 0; s < 7; s++) {
-                dates[weekDayToNum(ld.getDayOfWeek())] = noteDayF.format(ld);
-                dvs[weekDayToNum(ld.getDayOfWeek())].setText(days);
+                dates[s] = noteDayF.format(ld);
+                dvs[s].setText(days);
                 int finalS = s;
                 dvs[s].setOnClickListener(view -> {
                     for (TextView dv : dvs) {
@@ -147,29 +151,30 @@ public class PagerFragment2 extends Fragment {
 //            }
         }
 
-
-        final DateTimeFormatter dayNum = DateTimeFormatter.ofPattern("yyyy_MM_dd", Locale.ENGLISH);
-        String check = dayNum.format(MainActivity.stLdate);
-        if (check.equals(dates[0])) {
-            dvs[0].setTextColor(Color.parseColor("#FFA500"));
-        }
-        if (check.equals(dates[1])) {
-            dvs[1].setTextColor(Color.parseColor("#FFA500"));
-        }
-        if (check.equals(dates[2])) {
-            dvs[2].setTextColor(Color.parseColor("#FFA500"));
-        }
-        if (check.equals(dates[3])) {
-            dvs[3].setTextColor(Color.parseColor("#FFA500"));
-        }
-        if (check.equals(dates[4])) {
-            dvs[4].setTextColor(Color.parseColor("#FFA500"));
-        }
-        if (check.equals(dates[5])) {
-            dvs[5].setTextColor(Color.parseColor("#FFA500"));
-        }
-        if (check.equals(dates[6])) {
-            dvs[6].setTextColor(Color.parseColor("#FFA500"));
+        if (pageNumber == MainActivity.pageNumberForDay1) {
+            final DateTimeFormatter twoDayNum = DateTimeFormatter.ofPattern("dd", Locale.ENGLISH);
+            String check = twoDayNum.format(MainActivity.stLdate);
+            if (check.contentEquals(dvs[0].getText())) {
+                dvs[0].setTextColor(Color.parseColor("#FFA500"));
+            }
+            if (check.contentEquals(dvs[1].getText())) {
+                dvs[1].setTextColor(Color.parseColor("#FFA500"));
+            }
+            if (check.contentEquals(dvs[2].getText())) {
+                dvs[2].setTextColor(Color.parseColor("#FFA500"));
+            }
+            if (check.contentEquals(dvs[3].getText())) {
+                dvs[3].setTextColor(Color.parseColor("#FFA500"));
+            }
+            if (check.contentEquals(dvs[4].getText())) {
+                dvs[4].setTextColor(Color.parseColor("#FFA500"));
+            }
+            if (check.contentEquals(dvs[5].getText())) {
+                dvs[5].setTextColor(Color.parseColor("#FFA500"));
+            }
+            if (check.contentEquals(dvs[6].getText())) {
+                dvs[6].setTextColor(Color.parseColor("#FFA500"));
+            }
         }
 
         return result;
