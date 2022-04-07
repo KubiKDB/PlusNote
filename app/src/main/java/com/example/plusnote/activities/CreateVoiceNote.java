@@ -178,6 +178,7 @@ public class CreateVoiceNote extends AppCompatActivity {
                 alarmManager.cancel(pendingIntent);
                 isReminder = false;
                 alreadyAvailableNote.setReminder_id(0);
+                Toast.makeText(this, "Reminder deleted", Toast.LENGTH_SHORT).show();
                 saveNote();
             }
         });
@@ -494,7 +495,9 @@ public class CreateVoiceNote extends AppCompatActivity {
         }
 
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,temp, pendingIntent);
+        AlarmManager.AlarmClockInfo aci = new AlarmManager.AlarmClockInfo(temp, pendingIntent);
+        alarmManager.setAlarmClock(aci, pendingIntent);
+        Toast.makeText(this, "Reminder set", Toast.LENGTH_SHORT).show();
     }
 
     private void share() {
@@ -741,15 +744,16 @@ public class CreateVoiceNote extends AppCompatActivity {
                 alarmManager.cancel(pendingIntent);
 
                 alreadyAvailableNote.setReminder_id(0);
-            }
-            reminderTime = alreadyAvailableNote.getReminder_time();
+                reminderTime = alreadyAvailableNote.getReminder_time();
 
-            String[] temp = reminderTime.split(":");
-            setAlarm(
-                    String.valueOf(inputVoiceTitle.getText()),
-                    temp[2],
-                    temp[0] + ":" + temp[1]
-            );
+                String[] temp = reminderTime.split(":");
+                setAlarm(
+                        String.valueOf(inputVoiceTitle.getText()),
+                        temp[2],
+                        temp[0] + ":" + temp[1]
+                );
+                isReminder = true;
+            }
         }
         if (alreadyAvailableNote != null) {
             note.setImage_path(alreadyAvailableNote.getImage_path());

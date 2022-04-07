@@ -176,6 +176,7 @@ public class CreateImageNote extends AppCompatActivity {
                 alarmManager.cancel(pendingIntent);
                 isReminder = false;
                 alreadyAvailableNote.setReminder_id(0);
+                Toast.makeText(this, "Reminder deleted", Toast.LENGTH_SHORT).show();
                 saveNote();
             }
         });
@@ -479,7 +480,9 @@ public class CreateImageNote extends AppCompatActivity {
         }
 
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,temp, pendingIntent);
+        AlarmManager.AlarmClockInfo aci = new AlarmManager.AlarmClockInfo(temp, pendingIntent);
+        alarmManager.setAlarmClock(aci, pendingIntent);
+        Toast.makeText(this, "Reminder set", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressWarnings("deprecation")
@@ -636,30 +639,32 @@ public class CreateImageNote extends AppCompatActivity {
                 alarmManager.cancel(pendingIntent);
 
                 alreadyAvailableNote.setReminder_id(0);
-            }
-            reminderTime = alreadyAvailableNote.getReminder_time();
+                reminderTime = alreadyAvailableNote.getReminder_time();
 
-            String[] temp = reminderTime.split(":");
-            setAlarm(
-                    String.valueOf(inputImageTitle.getText()),
-                    temp[2],
-                    temp[0] + ":" + temp[1]
-            );
+                String[] temp = reminderTime.split(":");
+                setAlarm(
+                        String.valueOf(inputImageTitle.getText()),
+                        temp[2],
+                        temp[0] + ":" + temp[1]
+                );
+                isReminder = true;
+            }
         }
-        if (!getIntent().getBooleanExtra("isViewOrUpdate", false)) {
+        if (alreadyAvailableNote == null) {
             note.setImage_path(selectedImagePath);
             note.setAudio_length(VideoXActivity.timer_string);
             note.setFrom_gallery(CameraXActivity.fromGallery);
             note.setIs_video(isVideo);
             note.setDate(MainActivity.notesDay);
             note.setReminderSet(isReminder);
+            if (isReminder) {
+                note.setReminder_time(reminderTime);
+                note.setReminder_id(alarmID);
+            }
             if (reminderTime != null) {
                 note.setReminder_time(reminderTime);
                 note.setReminderSet(true);
                 note.setReminder_id(alarmID);
-            } else {
-                note.setReminder_time(alreadyAvailableNote.getReminder_time());
-                note.setReminder_id(alreadyAvailableNote.getReminder_id());
             }
         } else {
             note.setIs_video(alreadyAvailableNote.isIs_video());
@@ -673,6 +678,16 @@ public class CreateImageNote extends AppCompatActivity {
                 note.setReminder_id(alarmID);
             }
             note.setReminderSet(isReminder);
+            if (reminderTime != null) {
+                note.setReminder_time(reminderTime);
+                note.setReminderSet(true);
+                note.setReminder_id(alarmID);
+            } else {
+                if(alreadyAvailableNote.isReminderSet()){
+                    note.setReminder_time(alreadyAvailableNote.getReminder_time());
+                    note.setReminder_id(alreadyAvailableNote.getReminder_id());
+                }
+            }
         }
         note.setIs_image(true);
         if (alreadyAvailableNote != null) {

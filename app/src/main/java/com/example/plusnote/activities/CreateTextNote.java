@@ -2,19 +2,13 @@ package com.example.plusnote.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.MediaRouteButton;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -154,6 +148,7 @@ public class CreateTextNote extends AppCompatActivity {
                 isReminder = false;
                 alreadyAvailableNote.setReminderSet(false);
                 alreadyAvailableNote.setReminder_id(0);
+                Toast.makeText(this, "Reminder deleted", Toast.LENGTH_SHORT).show();
                 saveNote();
             }
         });
@@ -362,6 +357,7 @@ public class CreateTextNote extends AppCompatActivity {
         Log.e("logTime", dateandtime + " // " + temp);
         AlarmManager.AlarmClockInfo aci = new AlarmManager.AlarmClockInfo(temp, pendingIntent);
         alarmManager.setAlarmClock(aci, pendingIntent);
+        Toast.makeText(this, "Reminder set", Toast.LENGTH_SHORT).show();
     }
 
     private void share() {
@@ -476,7 +472,6 @@ public class CreateTextNote extends AppCompatActivity {
                         temp[2],
                         temp[0] + ":" + temp[1]
                 );
-
                 isReminder = true;
             }
         }
